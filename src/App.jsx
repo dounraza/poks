@@ -2,15 +2,16 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Inscription from './pages/Inscription';
 import Connexion from './pages/Connexion';
+import Index from './pages/Index';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<h1>Lobby (Accueil)</h1>} />
+        <Route path="/" element={<Index />} />
         <Route path="/inscription" element={<Inscription />} />
         <Route path="/connexion" element={<Connexion />} />
-        <Route path="/login" element={<h1>Login</h1>} />
+        <Route path="/login" element={<Connexion />} />
       </Routes>
     </Router>
   );

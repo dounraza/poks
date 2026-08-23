@@ -1,9 +1,6 @@
 {
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/inscription", "destination": "/src/inscription.html" },
-    { "source": "/connexion", "destination": "/src/connexion.html" },
-    { "source": "/login", "destination": "/src/login.html" },
-    { "source": "/(.*)", "destination": "/src/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
