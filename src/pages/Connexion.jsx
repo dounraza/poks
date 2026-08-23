@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Connexion = () => {
   useEffect(() => {
@@ -160,24 +161,22 @@ const Connexion = () => {
   }, []);
 
   return (
-    <>
-      <style>{':root{--ink:#150205;--red:#A5121A;--white:#FFFFFF;--cream:#FFF6E2;--gold:#D9AE4B;--gold-hi:#F5DA92;--gold-deep:#8A6416;--muted:#D9B8A8;--line:rgba(217,174,75,.28);}'}</style>
-    
+    <div className="page-auth">
       <header className="topbar">
         <div className="wrap">
-          <a className="logo" href="/"><b>&spades;</b>Afripoks</a>
+          <Link className="logo" to="/"><b>&spades;</b>Afripoks</Link>
           <div className="account">
-            <a className="btn btn-ghost" href="/">Retour à l'accueil</a>
+            <Link className="btn btn-ghost" to="/">Retour à l'accueil</Link>
           </div>
         </div>
       </header>
     
       <nav className="subnav">
         <div className="wrap">
-          <a href="/">Accueil</a>
+          <Link to="/">Accueil</Link>
           <a href="/lobby.html"><span className="tag">JOUER</span>Cash games</a>
           <a href="/lobby.html#tournois"><span className="tag">JOUER</span>Tournois</a>
-          <a href="/">Apprendre le poker</a>
+          <Link to="/">Apprendre le poker</Link>
         </div>
       </nav>
     
@@ -200,7 +199,7 @@ const Connexion = () => {
     
           <div id="resultat"></div>
           <a className="retour" href="/mot-de-passe-oublie">Mot de passe oublié ?</a>
-          <a className="retour" href="/inscription">Pas encore de compte ? Créer un compte</a>
+          <Link className="retour" to="/inscription">Pas encore de compte ? Créer un compte</Link>
         </div>
       </section>
     
@@ -225,13 +224,13 @@ const Connexion = () => {
           <h2>Ah te revoilà</h2>
           <p>On commençait presque à gagner sans toi.<span className="emo">😏</span></p>
           <div className="cta">
-            <a className="btn btn-gold" href="/lobby">Rejoindre une table</a>
+            <a className="btn btn-gold" href="/lobby.html">Rejoindre une table</a>
           </div>
         </div>
       </div>
     
       <canvas id="fx" aria-hidden="true"></canvas>
-    </>
+    </div>
   );
 };
 
