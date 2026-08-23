@@ -6,6 +6,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const authRoutes = require('./routes/auth');
 const walletRoutes = require('./routes/wallet');
@@ -25,7 +26,19 @@ app.use(helmet({
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static(require('path').join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/inscription', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src', 'inscription.html'));
+});
+
+app.get('/connexion', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src', 'connexion.html'));
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src', 'login.html'));
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/wallet', walletRoutes);
