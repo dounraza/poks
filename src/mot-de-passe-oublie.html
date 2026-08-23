@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Afripoks — Mot de passe oublié</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#150205;
+    --red:#A5121A;
+    --white:#FFFFFF;
+    --cream:#FFF6E2;
+    --gold:#D9AE4B;
+    --gold-hi:#F5DA92;
+    --gold-deep:#8A6416;
+    --muted:#D9B8A8;
+    --line:rgba(217,174,75,.28);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--white);min-height:100vh;
+    font-family:'Manrope',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px;border-radius:2px}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+
+  /* ---------- barres du haut ---------- */
+  .topbar{background:linear-gradient(180deg,#6E0C13,#4A080D);
+    border-bottom:1px solid var(--line);position:sticky;top:0;z-index:60}
+  .topbar .wrap{display:flex;align-items:center;gap:38px;height:70px}
+  .logo{font-family:'Anton',Impact,sans-serif;font-size:26px;letter-spacing:.5px;
+    display:flex;align-items:center;gap:10px;color:var(--white)}
+  .logo b{display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border-radius:50%;
+    background:linear-gradient(160deg,#F5DA92,#C79A2E);
+    border:1px solid #8A6416;font-size:16px;line-height:1;color:#5C0A10}
+  .account{margin-left:auto;display:flex;gap:12px;align-items:center}
+
+  .btn{font-weight:800;font-size:14.5px;padding:11px 24px;border-radius:999px;
+    border:1px solid transparent;cursor:pointer;display:inline-block;font-family:inherit;
+    transition:transform .15s ease,filter .15s ease,background .15s ease,border-color .15s ease}
+  .btn:active{transform:translateY(1px)}
+  .btn-ghost{border-color:rgba(255,255,255,.6);color:var(--white);background:transparent}
+  .btn-ghost:hover{background:rgba(255,255,255,.14);border-color:#fff}
+  .btn-gold{background:linear-gradient(170deg,#F0D28A,#C79A2E);color:#3A2405;
+    border-color:#8A6416;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+  .btn-gold:hover{filter:brightness(1.08)}
+  .btn-gold[disabled]{opacity:.6;cursor:default;filter:none}
+
+  .subnav{background:linear-gradient(180deg,#E7C879,#C79A2E);
+    border-bottom:1px solid #8A6416;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .subnav .wrap{display:flex;gap:28px;height:48px;align-items:center;overflow-x:auto;scrollbar-width:none}
+  .subnav .wrap::-webkit-scrollbar{display:none}
+  .subnav a{font-size:14px;color:#4A2E06;font-weight:600;white-space:nowrap;
+    border-bottom:2px solid transparent;line-height:46px;position:relative}
+  .subnav a:hover{color:#1A0205}
+  .subnav a.on{color:#5C0A10;font-weight:800;border-bottom-color:#8E1219}
+  .tag{position:absolute;top:2px;left:50%;transform:translateX(-50%);
+    background:#8E1219;color:var(--gold-hi);font-size:9px;font-weight:800;letter-spacing:.8px;
+    padding:1px 6px;border-radius:3px;line-height:1.5}
+
+  /* ---------- scène ---------- */
+  .stage{position:relative;overflow:hidden;min-height:calc(100vh - 118px);
+    display:flex;align-items:center;justify-content:center;padding:56px 20px;
+    background:
+      radial-gradient(circle at 50% 42%, #C0161E 0%, #9A1017 20%, #6E0A11 42%, #48060C 64%, #2A0407 84%, #150205 100%)}
+  .stage::before{content:"";position:absolute;inset:-20%;pointer-events:none;opacity:.38;
+    background:repeating-conic-gradient(from 0deg at 50% 42%,
+      rgba(245,218,146,.28) 0deg 2.2deg, transparent 2.2deg 9deg);
+    mask-image:radial-gradient(circle at 50% 42%, transparent 10%, #000 34%, transparent 76%);
+    -webkit-mask-image:radial-gradient(circle at 50% 42%, transparent 10%, #000 34%, transparent 76%)}
+  .stage::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(circle at 50% 42%, rgba(70,4,10,.4) 0 24%, transparent 52%),
+      linear-gradient(to bottom, transparent 62%, rgba(21,2,5,.9) 100%)}
+
+  /* ---------- panneau du formulaire ---------- */
+  .panel{position:relative;z-index:5;width:100%;max-width:460px;
+    background:linear-gradient(170deg,rgba(58,6,11,.94),rgba(21,2,5,.96));
+    border:2px solid var(--gold);border-radius:20px;padding:38px 34px 34px;
+    box-shadow:0 30px 70px rgba(0,0,0,.6), inset 0 0 0 1px rgba(245,218,146,.18);
+    animation:rise .8s cubic-bezier(.2,.8,.3,1) backwards}
+  @keyframes rise{from{opacity:0;transform:translateY(24px)}}
+
+  .panel h1{font-family:'Anton',Impact,sans-serif;text-transform:uppercase;
+    font-size:clamp(28px,4.4vw,40px);line-height:.96;letter-spacing:.5px;
+    transform:skewX(-8deg);text-align:center;
+    background:linear-gradient(180deg,#FFF8DC 6%,#F0D28A 44%,#D9AE4B 78%,#F5DA92 100%);
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;-webkit-text-fill-color:transparent}
+  .panel .sub{text-align:center;color:var(--muted);font-size:14px;margin-top:10px;margin-bottom:26px}
+
+  label{display:block;margin-top:16px;font-size:12.5px;font-weight:800;letter-spacing:.6px;
+    text-transform:uppercase;color:var(--gold-hi)}
+  input{width:100%;padding:12px 14px;margin-top:7px;border-radius:10px;
+    border:1px solid rgba(217,174,75,.45);background:rgba(255,246,226,.06);
+    color:var(--white);font-family:inherit;font-size:15px;
+    transition:border-color .15s ease,background .15s ease}
+  input::placeholder{color:#B99A94}
+  input:focus{outline:none;border-color:var(--gold-hi);background:rgba(255,246,226,.11)}
+  input[type="date"]{color-scheme:dark}
+
+  #btnSubmit{width:100%;margin-top:26px;padding:15px;font-size:16px}
+  #resultat{margin-top:16px;font-size:13.5px;text-align:center;line-height:1.5;white-space:pre-wrap}
+  .succes{color:#8BE39B}
+  .erreur{color:#FF8E8E}
+  .retour{display:block;text-align:center;margin-top:22px;font-size:13px;color:var(--muted)}
+  .retour:hover{color:var(--gold-hi);text-decoration:underline}
+
+  /* ---------- écran de réussite ---------- */
+  #victoire{position:fixed;inset:0;z-index:90;display:none;
+    align-items:center;justify-content:center;text-align:center;padding:24px;
+    background:radial-gradient(circle at 50% 46%, rgba(154,16,23,.96) 0%, rgba(46,5,10,.98) 55%, rgba(10,1,2,.99) 100%)}
+  #victoire.on{display:flex}
+
+  .jetons{position:absolute;inset:0;pointer-events:none}
+  .jet{position:absolute;top:46%;left:50%;width:150px;height:150px;border-radius:50%;
+    background:repeating-conic-gradient(#A5121A 0 22deg,#E7C879 22deg 28deg);
+    box-shadow:0 22px 50px rgba(0,0,0,.65), inset 0 0 0 7px rgba(217,174,75,.95);
+    display:flex;align-items:center;justify-content:center;
+    animation:jetIn 1.25s cubic-bezier(.45,0,.7,.5) forwards;animation-delay:var(--t)}
+  .jet::after{content:"\2660";width:88px;height:88px;border-radius:50%;
+    background:linear-gradient(160deg,#8E1219,#48060C);border:4px solid #D9AE4B;
+    display:flex;align-items:center;justify-content:center;color:var(--gold-hi);font-size:38px}
+  @keyframes jetIn{
+    0%{transform:translate(calc(-50% + var(--fx)),calc(-50% + var(--fy))) rotate(var(--r0)) scale(1.2);opacity:0}
+    12%{opacity:1}
+    100%{transform:translate(-50%,-50%) rotate(0deg) scale(.45);opacity:1}
+  }
+  .jetons.gone .jet{animation:none;opacity:0;visibility:hidden}
+
+  .vflash,.vwave{position:absolute;top:46%;left:50%;border-radius:50%;pointer-events:none;opacity:0}
+  .vflash{width:460px;height:460px;margin:-230px 0 0 -230px;
+    background:radial-gradient(circle,#FFFFFF 0 14%,#FFF3C9 30%,rgba(245,218,146,.6) 50%,rgba(217,174,75,0) 74%)}
+  .vwave{width:240px;height:240px;margin:-120px 0 0 -120px;border:4px solid rgba(245,218,146,.9)}
+  .boom .vflash{animation:vflash 1.2s ease-out forwards}
+  .boom .vwave{animation:vwave 1.8s cubic-bezier(.08,.8,.3,1) forwards}
+  .boom .vwave.w2{animation-delay:.22s;border-color:rgba(217,174,75,.5)}
+  .boom .vwave.w3{animation-delay:.46s;border-color:rgba(255,243,201,.32)}
+  @keyframes vflash{0%{transform:scale(.08);opacity:0}12%{transform:scale(1);opacity:1}100%{transform:scale(3.2);opacity:0}}
+  @keyframes vwave{0%{transform:scale(.12);opacity:0}10%{opacity:1}100%{transform:scale(8);opacity:0}}
+
+  .vmsg{position:relative;z-index:3;max-width:620px;opacity:0}
+  .boom .vmsg{animation:riseIn 1s cubic-bezier(.2,.8,.3,1) forwards;animation-delay:.75s}
+  @keyframes riseIn{
+    from{opacity:0;transform:translateY(28px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  .grosjeton{width:170px;height:170px;border-radius:50%;margin:0 auto 30px;
+    background:repeating-conic-gradient(#A5121A 0 22deg,#E7C879 22deg 28deg);
+    box-shadow:0 24px 60px rgba(0,0,0,.6), inset 0 0 0 9px rgba(217,174,75,.95),
+      0 0 70px rgba(245,218,146,.55);
+    display:flex;align-items:center;justify-content:center;
+    animation:jetonPop 1s cubic-bezier(.2,1.5,.35,1) backwards;animation-delay:.75s}
+  .grosjeton span{width:104px;height:104px;border-radius:50%;
+    background:linear-gradient(160deg,#8E1219,#48060C);border:5px solid #D9AE4B;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Anton',Impact,sans-serif;font-size:34px;color:var(--gold-hi);letter-spacing:1px}
+  @keyframes jetonPop{from{transform:scale(0) rotate(-200deg);opacity:0}}
+
+  .vmsg h2{font-family:'Anton',Impact,sans-serif;text-transform:uppercase;
+    font-size:clamp(28px,4.6vw,54px);line-height:1;letter-spacing:.5px;transform:skewX(-8deg);
+    background:linear-gradient(180deg,#FFF8DC 6%,#F0D28A 44%,#D9AE4B 78%,#F5DA92 100%);
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;-webkit-text-fill-color:transparent}
+  .vmsg p{margin-top:20px;font-size:clamp(15px,2vw,19px);line-height:1.55;color:#FBE6DC}
+  .vmsg .emo{font-size:1.5em;display:block;margin-top:14px}
+  .vmsg .cta{margin-top:34px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .vmsg .cta .btn{padding:15px 36px;font-size:16px}
+
+  #fx{position:fixed;inset:0;width:100%;height:100%;z-index:95;pointer-events:none}
+
+  @media (max-width:760px){
+    .panel{padding:30px 22px 26px}
+    .jet{width:104px;height:104px}
+    .jet::after{width:60px;height:60px;font-size:26px;border-width:3px}
+    .grosjeton{width:132px;height:132px}
+    .grosjeton span{width:82px;height:82px;font-size:26px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .panel,.jet,.vflash,.vwave,.vmsg,.grosjeton{animation:none!important}
+    .vmsg{opacity:1}
+    .jetons,#fx{display:none}
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="logo" href="/"><b>&spades;</b>Afripoks</a>
+    <div class="account">
+      <a class="btn btn-ghost" href="/">Retour à l'accueil</a>
+    </div>
+  </div>
+</header>
+
+<nav class="subnav">
+  <div class="wrap">
+    <a href="/">Accueil</a>
+    <a href="/lobby.html"><span class="tag">JOUER</span>Cash games</a>
+    <a href="/lobby.html#tournois"><span class="tag">JOUER</span>Tournois</a>
+    <a href="/">Apprendre le poker</a>
+  </div>
+</nav>
+
+<section class="stage">
+  <div class="panel">
+    <h1>Mot de passe oublié</h1>
+    <p class="sub">Indiquez votre email, nous vous envoyons un code à six chiffres.</p>
+
+    <form id="formulaireOubli">
+      <label for="email">Email</label>
+      <input type="email" id="email" required autocomplete="email" placeholder="vous@exemple.com">
+
+      <button type="submit" class="btn btn-gold" id="btnSubmit">Recevoir le code</button>
+    </form>
+
+    <div id="resultat"></div>
+    <a class="retour" href="/connexion.html">Revenir à la connexion</a>
+  </div>
+</section>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<script>
+(function () {
+  /* ---------- poussière d'or ---------- */
+  var reduce = window.matchMedia &&
+               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cv = document.getElementById('fx');
+  var ctx = (cv && cv.getContext && !reduce) ? cv.getContext('2d') : null;
+  if (!ctx && cv) cv.style.display = 'none';
+
+  if (ctx) {
+    var DPR = Math.min(window.devicePixelRatio || 1, 2), W, H, parts = [];
+    var GOLD = ['#FFF8DC', '#F5DA92', '#E7C879', '#D9AE4B', '#C79A2E'];
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function resize() {
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = W * DPR; cv.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    (function tick() {
+      ctx.clearRect(0, 0, W, H);
+      if (parts.length < 55 && Math.random() < 0.4) {
+        parts.push({ x: rnd(0, W), y: -10, vx: rnd(-0.35, 0.35), vy: rnd(0.35, 1.2),
+                     r: rnd(0.8, 2.3), tw: rnd(0, 6.28), tws: rnd(0.04, 0.12),
+                     c: GOLD[(Math.random() * GOLD.length) | 0] });
+      }
+      for (var i = parts.length - 1; i >= 0; i--) {
+        var p = parts[i];
+        p.y += p.vy; p.x += p.vx; p.tw += p.tws;
+        if (p.y > H + 20) { parts.splice(i, 1); continue; }
+        ctx.globalAlpha = (p.y > H * 0.88 ? Math.max(0, (H + 20 - p.y) / (H * 0.12 + 20)) : 1)
+                          * (0.4 + 0.45 * Math.sin(p.tw));
+        ctx.fillStyle = p.c;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  /* ---------- envoi ---------- */
+  document.getElementById('formulaireOubli').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var resultatDiv = document.getElementById('resultat');
+    var bouton = document.getElementById('btnSubmit');
+
+    resultatDiv.textContent = 'Envoi en cours...';
+    resultatDiv.className = '';
+    bouton.disabled = true;
+    var courriel = document.getElementById('email').value;
+
+    try {
+      var reponse = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: courriel })
+      });
+
+      if (reponse.status === 404) {
+        resultatDiv.textContent = "Cette fonction n'est pas encore activée sur le serveur.";
+        resultatDiv.className = 'erreur';
+        bouton.disabled = false;
+        return;
+      }
+
+      var data = await reponse.json();
+
+      if (data.success) {
+        resultatDiv.textContent = 'Code envoyé. Ouvrez votre boîte mail.';
+        resultatDiv.className = 'succes';
+        setTimeout(function () {
+          window.location = '/code.html?email=' + encodeURIComponent(courriel);
+        }, 900);
+      } else {
+        resultatDiv.textContent = (data.message || JSON.stringify(data.errors));
+        resultatDiv.className = 'erreur';
+        bouton.disabled = false;
+      }
+    } catch (err) {
+      resultatDiv.textContent = "Impossible de contacter le serveur. Vérifiez qu'il tourne toujours.";
+      resultatDiv.className = 'erreur';
+      bouton.disabled = false;
+    }
+  });
+})();
+</script>
+
+<script type=\"module\" src=\"./afripoks-bridge.js\"></script>
+</body>
+</html>

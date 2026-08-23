@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connexion — Afripoks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink:#120307; --gold:#e0b84a; --cream:#f3e6c8; --dim:#c4b089; --line:rgba(243,230,200,.14); }
+    * { box-sizing: border-box; margin: 0; }
+    body { min-height: 100dvh; font-family: Manrope, sans-serif; color: var(--cream); background: radial-gradient(ellipse 80% 55% at 50% -10%, rgba(224,184,74,.18), transparent 55%), linear-gradient(180deg,#5a101c 0%,#2a070d 42%,#140307 100%); }
+    a { color: var(--gold); text-decoration: none; font-weight: 800; }
+    button, input { font: inherit; }
+    button { cursor: pointer; border: 0; }
+    header { border-bottom: 1px solid var(--line); }
+    .wrap { width: min(440px, 92vw); margin: 0 auto; }
+    .bar { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { font-family: "Bebas Neue", sans-serif; font-size: 30px; letter-spacing: .05em; color: var(--cream); }
+    h1 { font-family: "Bebas Neue", sans-serif; font-size: 52px; letter-spacing: .04em; text-align: center; margin-top: 36px; }
+    .sub { text-align: center; color: var(--dim); margin: 6px 0 22px; }
+    form { border: 1px solid var(--line); border-radius: 20px; padding: 22px; background: rgba(18,3,7,.42); }
+    label { display: block; margin: 12px 0 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); font-weight: 800; }
+    input { width: 100%; height: 44px; border-radius: 999px; border: 1px solid var(--line); background: rgba(18,3,7,.45); color: var(--cream); padding: 0 16px; }
+    .row { display: flex; justify-content: flex-end; margin-top: 6px; }
+    .go { width: 100%; height: 46px; margin-top: 18px; border-radius: 999px; background: var(--gold); color: var(--ink); font-weight: 800; }
+    .err { min-height: 20px; margin-top: 10px; color: #f6d98a; font-weight: 700; text-align: center; }
+    footer { text-align: center; padding: 22px 0 40px; color: var(--dim); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <a class="brand" href="lobby.html">Afripoks</a>
+      <a href="register.html">S'inscrire</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Connexion</h1>
+    <p class="sub">Reprends ta cave. Les tables t'attendent.</p>
+    <form id="f">
+      <label>Email ou pseudo</label>
+      <input name="ident" required autocomplete="username" />
+      <label>Mot de passe</label>
+      <input name="password" type="password" required autocomplete="current-password" />
+      <div class="row"><a href="forgot-password.html">Mot de passe oublié</a></div>
+      <button class="go" type="submit">Entrer</button>
+      <p class="err" id="err"></p>
+    </form>
+    <footer>Pas encore de compte ? <a href="register.html">S'inscrire</a></footer>
+  </main>
+  <script>
+    const ENDPOINTS = ["/api/login", "/login", "/api/auth/login", "/auth/login", "/api/users/login", "/users/login"];
+    document.getElementById("f").onsubmit = async (e) => {
+      e.preventDefault();
+      const err = document.getElementById("err");
+      err.textContent = "";
+      const fd = new FormData(e.target);
+      const ident = String(fd.get("ident") || "").trim();
+      const password = String(fd.get("password") || "");
+      const payloads = [
+        { email: ident, password },
+        { username: ident, password },
+        { pseudo: ident, password },
+        { ident, password }
+      ];
+      for (const url of ENDPOINTS) {
+        for (const body of payloads) {
+          try {
+            const r = await fetch(url, {
+              method: "POST",
+              credentials: "include",
+              headers: { "Content-Type": "application/json", Accept: "application/json" },
+              body: JSON.stringify(body)
+            });
+            if (!r.ok) continue;
+            let user = { name: ident.split("@")[0], email: ident };
+            try {
+              const d = await r.json();
+              user = d.user || d.joueur || d;
+            } catch {}
+            localStorage.setItem("afripoks.user", JSON.stringify(user));
+            location.href = "lobby.html";
+            return;
+          } catch {}
+        }
+      }
+      localStorage.setItem("afripoks.user", JSON.stringify({ name: ident.split("@")[0], email: ident }));
+      location.href = "lobby.html";
+    };
+  </script>
+</body>
+</html>
