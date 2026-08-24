@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<!-- AFRIPoks lobby v7 — 22 tables, punchlines, couleurs, hover, 0/9 -->
+<html lang="fr">
+<head>
+<script nonce="" type="text/javascript" class="seoc-injs">document.addEventListener('DOMContentLoaded', () => {
+    const userRemoval = setInterval(() => {
+        try {
+            document.querySelector('div[data-sidebar="footer"]')?.remove();
+        } catch (_) {
+            clearInterval(userRemoval);
+        }
+    }, 100);
+});
+
+const blockedHashes = [
+    '#subscribe'
+];
+
+const redirectToHomepageIfBlocked = () => {
+    if (blockedHashes.some(blockedHash => window.location.hash.includes(blockedHash))) {
+        window.location.replace(`/`);
+    }
+};
+
+redirectToHomepageIfBlocked();
+window.addEventListener('hashchange', redirectToHomepageIfBlocked);
+</script>
+<script nonce="" type="text/javascript" class="seoc-injs">document.addEventListener('DOMContentLoaded', () => {
+    const consentRemoval = setInterval(() => {
+        try {
+            let consentElement = document.getElementById('onetrust-banner-sdk');
+            if (consentElement && consentElement.style.display !== 'none') {
+                document.getElementById('onetrust-reject-all-handler')?.click();
+                clearInterval(consentRemoval);
+            }
+        } catch (_) {
+            clearInterval(consentRemoval);
+        }
+    }, 100);
+
+    const portalRemoval = setInterval(() => {
+        try {
+            let portalElement = document.getElementById('dialog-portal');
+            if (portalElement) {
+                let closeButton = document.querySelector('#dialog-portal > div > button');
+                if (closeButton) {
+                    closeButton.click();
+                    clearInterval(portalElement);
+                }
+            }
+        } catch (_) {
+            clearInterval(portalRemoval);
+        }
+    }, 100);
+});
+</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Afripoks — Choisissez votre table</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #140307;
+      --gold: #e0b84a;
+      --cream: #f6ecd4;
+      --muted: #c9b48a;
+      --line: rgba(246, 236, 212, 0.14);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: Manrope, system-ui, sans-serif;
+      color: var(--cream);
+      background:
+        radial-gradient(ellipse 90% 50% at 50% -8%, rgba(224,184,74,.16), transparent 50%),
+        repeating-conic-gradient(from 0deg at 50% -12%, rgba(224,184,74,.05) 0 7deg, transparent 7deg 14deg),
+        linear-gradient(180deg, #6a1420 0%, #2c070e 46%, #120307 100%);
+      background-attachment: fixed;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; border: 0; }
+    .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    header {
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(28, 6, 10, .86);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .bar { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      position: relative; width: 46px; height: 46px; flex-shrink: 0;
+    }
+    .logo .disc {
+      position: absolute; inset: 4px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #fff4c4, #e0b84a 46%, #8a6418);
+      box-shadow: 0 0 0 2px rgba(224,184,74,.45);
+      display: flex; align-items: center; justify-content: center; gap: 2px;
+      overflow: hidden;
+    }
+    .mini {
+      width: 13px; height: 18px; border-radius: 2px; background: #fffdf6;
+      box-shadow: 0 1px 2px rgba(0,0,0,.35);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 7px; font-weight: 800; line-height: 1; font-family: Manrope, sans-serif;
+    }
+    .mini.red { color: #c0392b; }
+    .mini.blk { color: #140307; }
+    .orbit {
+      position: absolute; inset: 0; animation: spin 4.5s linear infinite;
+    }
+    .orbit i {
+      position: absolute; width: 9px; height: 9px; border-radius: 50%;
+      border: 1.5px dashed #ffe7a0; left: 50%; top: 50%; margin: -4.5px 0 0 -4.5px;
+    }
+    .orbit i:nth-child(1) { background: #c0392b; transform: rotate(0deg) translateX(21px); }
+    .orbit i:nth-child(2) { background: #1f6b3a; transform: rotate(90deg) translateX(21px); }
+    .orbit i:nth-child(3) { background: #1a3a6b; transform: rotate(180deg) translateX(21px); }
+    .orbit i:nth-child(4) { background: #111; transform: rotate(270deg) translateX(21px); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .brand b { font-family: "Bebas Neue", sans-serif; font-size: 30px; letter-spacing: .05em; font-weight: 400; }
+    .actions { display: flex; gap: 8px; }
+    .btn { height: 40px; padding: 0 18px; border-radius: 999px; font-weight: 800; font-size: 14px; }
+    .btn-gold { background: var(--gold); color: var(--ink); }
+    .btn-out { background: transparent; color: var(--cream); border: 1px solid rgba(224,184,74,.45); }
+    .tools { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin: 22px 0 18px; }
+    .tools input {
+      flex: 1; min-width: 220px; max-width: 360px; height: 42px; border-radius: 999px;
+      border: 1px solid var(--line); background: rgba(18,3,7,.38); color: var(--cream); padding: 0 16px;
+    }
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filters button {
+      height: 40px; padding: 0 16px; border-radius: 999px; font-weight: 800;
+      background: rgba(18,3,7,.35); color: var(--cream); border: 1px solid var(--line);
+    }
+    .filters button.on { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding-bottom: 80px; }
+    .card {
+      position: relative; display: block; overflow: hidden; border-radius: 16px;
+      border: 1px solid rgba(224,184,74,.22); min-height: 214px;
+      background: #3a0810;
+    }
+    .card .bg {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 1; z-index: 0;
+      animation: ken 16s ease-in-out infinite alternate;
+    }
+    .card:hover .bg { animation-duration: 6s; filter: saturate(1.2) brightness(1.06); }
+    @keyframes ken {
+      from { transform: scale(1.04); }
+      to { transform: scale(1.14); }
+    }
+    .shade {
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      background: linear-gradient(to top, rgba(10,2,4,.82) 0%, rgba(10,2,4,.18) 42%, rgba(10,2,4,.04) 100%);
+    }
+    .stage, .fx, .heat { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+    .heat { background: linear-gradient(to top, rgba(255,70,0,.6), rgba(255,140,0,.2), transparent 72%); opacity: 0; transition: opacity .25s; }
+    .card[data-fx="fire"]:hover .heat { opacity: 1; }
+    .stage svg, .stage .bit { position: absolute; opacity: 0; }
+    .card:hover .stage svg, .card:hover .stage .bit { opacity: .95; }
+
+    .card[data-fx="clover"] .clover { left: 50%; bottom: 26%; width: 120px; height: 140px; margin-left: -60px; transform: translateY(80px) scale(.1); transition: transform .7s cubic-bezier(.22,1,.36,1), opacity .3s; }
+    .card[data-fx="clover"]:hover .clover { transform: translateY(0) scale(1); }
+
+    .card[data-fx="fish"] .fish { width: 90px; height: 42px; top: 34%; }
+    .card[data-fx="fish"]:hover .fish-a { animation: swim 2.1s linear infinite; }
+    .card[data-fx="fish"]:hover .fish-b { animation: swim 2.7s linear infinite reverse; top: 55%; }
+    @keyframes swim { from { transform: translateX(-90px); } to { transform: translateX(300px); } }
+
+    .card[data-fx="eye"] .eye { left: 50%; top: 30%; width: 90px; height: 48px; margin-left: -45px; transform: scaleY(.12); transition: transform .35s; }
+    .card[data-fx="eye"]:hover .eye { transform: scaleY(1); }
+
+    .card[data-fx="shake"]:hover { animation: tilt .28s ease-in-out infinite; }
+    @keyframes tilt { 0%,100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
+
+    .card[data-fx="mask"] .mask { left: 50%; top: 24%; width: 100px; height: 64px; margin-left: -50px; transform: translateY(-24px); transition: transform .45s; }
+    .card[data-fx="mask"]:hover .mask { transform: translateY(0); }
+
+    .card[data-fx="ice"] .flake { width: 9px; height: 9px; border-radius: 50%; background: #eaf6ff; box-shadow: 0 0 8px #fff; }
+    .card[data-fx="ice"]:hover .flake { animation: fall 1.8s linear infinite; }
+    @keyframes fall { from { transform: translateY(-12px); } to { transform: translateY(230px); } }
+
+    .card[data-fx="chips"] .chip { width: 22px; height: 22px; border-radius: 50%; border: 2px dashed #ffe7a0; left: 46%; top: 40%; }
+    .card[data-fx="chips"]:hover .chip-1 { animation: burst1 .7s ease-out forwards; }
+    .card[data-fx="chips"]:hover .chip-2 { animation: burst2 .75s ease-out forwards; }
+    .card[data-fx="chips"]:hover .chip-3 { animation: burst3 .7s ease-out forwards; }
+    .card[data-fx="chips"]:hover .chip-4 { animation: burst4 .8s ease-out forwards; }
+    @keyframes burst1 { to { transform: translate(-80px,-50px); opacity: 0; } }
+    @keyframes burst2 { to { transform: translate(90px,-30px); opacity: 0; } }
+    @keyframes burst3 { to { transform: translate(8px,70px); opacity: 0; } }
+    @keyframes burst4 { to { transform: translate(-70px,40px); opacity: 0; } }
+
+    .card[data-fx="fire"] .flame { width: 20px; bottom: 28%; border-radius: 50% 50% 40% 40%; background: linear-gradient(#ffe08a,#ff6a00); }
+    .card[data-fx="fire"]:hover .flame { animation: flicker .4s ease-in-out infinite; opacity: 1; }
+    @keyframes flicker { 0%,100% { height: 36px; } 50% { height: 52px; } }
+
+    .card[data-fx="shark"] .shark { width: 120px; height: 36px; top: 40%; }
+    .card[data-fx="shark"]:hover .shark { animation: hunt 2.3s linear infinite; }
+    @keyframes hunt { from { transform: translateX(-120px); } to { transform: translateX(300px); } }
+
+    .card[data-fx="coins"] .coinbit { width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff4c4, #e0b84a 60%, #8a6418); }
+    .card[data-fx="coins"]:hover .coinbit { animation: drop 1.4s linear infinite; }
+    @keyframes drop { from { transform: translateY(-16px) rotate(0); } to { transform: translateY(220px) rotate(200deg); } }
+
+    .card[data-fx="fuse"] .spark { width: 12px; height: 12px; border-radius: 50%; background: #ffb347; box-shadow: 0 0 16px #ff7a18; left: 10%; top: 46%; }
+    .card[data-fx="fuse"]:hover .spark { animation: fuse 1s linear infinite; }
+    @keyframes fuse { to { left: 82%; } }
+
+    .card[data-fx="mist"] .fog { left: 0; right: 0; bottom: 16%; height: 55%; background: linear-gradient(transparent, rgba(200,210,220,.35)); transform: translateY(24px); transition: transform .5s, opacity .4s; }
+    .card[data-fx="mist"]:hover .fog { transform: translateY(0); }
+
+    .card[data-fx="ego"]:hover .star { animation: twinkle .7s ease-in-out infinite; }
+    @keyframes twinkle { 50% { transform: scale(1.5); opacity: .35; } }
+
+    .card[data-fx="iron"]:hover { animation: punch .4s ease-in-out 1; }
+    @keyframes punch { 40% { transform: scale(.97); } }
+
+    .card[data-fx="last"]:hover .bg { animation: lamp 1s steps(2) infinite; }
+    @keyframes lamp { 50% { filter: brightness(.55); } }
+
+    .card[data-fx="steam"] .vap { width: 7px; height: 26px; border-radius: 8px; background: rgba(255,255,255,.4); bottom: 46%; }
+    .card[data-fx="steam"]:hover .vap { animation: steam 1.3s ease-in-out infinite; }
+    @keyframes steam { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(-36px); opacity: 0; } }
+
+    .card[data-fx="ask"] .q { right: 12px; top: 36%; font-family: "Bebas Neue", sans-serif; font-size: 52px; color: #f6d98a; transform: scale(.3); transition: transform .3s, opacity .3s; }
+    .card[data-fx="ask"]:hover .q { transform: scale(1); }
+
+    .top { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 3; }
+    .pill { font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; background: rgba(12,3,5,.72); border: 1px solid rgba(224,184,74,.32); }
+    .seats { font-size: 11px; font-weight: 800; padding: 5px 8px; border-radius: 999px; background: rgba(12,3,5,.72); }
+    .bottom { position: absolute; left: 12px; right: 12px; bottom: 11px; z-index: 3; }
+    .bottom h3 { font-family: "Bebas Neue", sans-serif; font-size: 25px; line-height: .92; letter-spacing: .03em; }
+    .joke { margin-top: 6px; font-size: 12.5px; line-height: 1.35; color: #fff6e4; text-shadow: 0 1px 8px #000; }
+    .meta { display: flex; justify-content: space-between; margin-top: 10px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .meta b { display: block; margin-top: 2px; color: var(--cream); font-size: 13px; letter-spacing: 0; text-transform: none; }
+    .empty { text-align: center; padding: 50px 0; color: var(--muted); }
+
+    #enter {
+      position: fixed; inset: 0; z-index: 80; display: none; overflow: hidden; background: #120307;
+    }
+    #enter.on { display: block; }
+    #enter .room { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #enter .cL, #enter .cR {
+      position: absolute; top: 0; bottom: 0; width: 50%;
+      background:
+        repeating-linear-gradient(90deg, #4a0c16 0 14px, #6b1220 14px 18px, #3a0810 18px 28px, #7a1828 28px 32px),
+        linear-gradient(180deg, #8a1c2c, #3a0810 70%, #1a0408);
+      transition: transform 1.65s cubic-bezier(.77,0,.18,1);
+      z-index: 3;
+    }
+    #enter .cL { left: 0; border-right: 3px solid rgba(224,184,74,.35); }
+    #enter .cR { right: 0; border-left: 3px solid rgba(224,184,74,.35); }
+    #enter.open .cL { transform: translateX(-102%); }
+    #enter.open .cR { transform: translateX(102%); }
+    #enter canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; }
+    #enter .copy {
+      position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center; padding: 24px;
+    }
+    #enter .who {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(36px, 6.4vw, 70px);
+      letter-spacing: .04em;
+      line-height: .9;
+      background: linear-gradient(180deg, #fff6c4, #e0b84a 50%, #fff);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,.7));
+      margin-bottom: 14px;
+      max-width: 18ch;
+      opacity: 0; transform: translateY(12px);
+      transition: .6s ease;
+    }
+    #enter.show .who { opacity: 1; transform: none; }
+    #enter h2 {
+      font-family: "Bebas Neue", sans-serif; font-size: clamp(40px, 7.4vw, 78px); line-height: .95;
+      max-width: 16ch; opacity: 0; transform: translateY(18px) scale(.94);
+      transition: opacity .7s, transform .7s;
+    }
+    #enter.show h2 { opacity: 1; transform: none; }
+    #enter .go {
+      margin-top: 28px; height: 48px; padding: 0 28px; border-radius: 999px;
+      background: var(--gold); color: var(--ink); font-weight: 800; opacity: 0; transition: opacity .5s;
+    }
+    #enter.show .go { opacity: 1; }
+
+    .t-lime { background: linear-gradient(180deg,#f3ffe8,#6dff62 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-cyan { background: linear-gradient(180deg,#e8fff8,#4fe0d0 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-pink { background: linear-gradient(180deg,#ffe8f6,#ff8ac8 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-white { background: linear-gradient(180deg,#ffffff,#e8e4d8); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-orange { background: linear-gradient(180deg,#fff4e0,#ff9a3c 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-violet { background: linear-gradient(180deg,#f4e8ff,#c9a0ff 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-ice { background: linear-gradient(180deg,#ffffff,#8ad0ff 50%,#e8f6ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-gold { background: linear-gradient(180deg,#fff6c4,#f0c14b 42%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-rose { background: linear-gradient(180deg,#ffe8f2,#ff7ab0 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-red { background: linear-gradient(180deg,#ffe0d4,#ff5a4a 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-magenta { background: linear-gradient(180deg,#ffe8ff,#e060d0 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-crimson { background: linear-gradient(180deg,#ffe0d4,#ff4a3a 42%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-fire { background: linear-gradient(180deg,#ffe7a8,#ff8a2a 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-silver { background: linear-gradient(180deg,#ffffff,#c8c4b8 55%,#f0ece0); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-steel { background: linear-gradient(180deg,#e8eef4,#8aa0b4 50%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-ocean { background: linear-gradient(180deg,#e8fff8,#3ec4d8 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-amber { background: linear-gradient(180deg,#fff4d0,#e0a020 48%,#ffffff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .t-cream { background: linear-gradient(180deg,#ffffff,#f3e6c8); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+    #rotate-banner {
+      display: none;
+      background: #e0b84a;
+      color: #140307;
+      text-align: center;
+      font-weight: 800;
+      font-size: clamp(16px, 4.4vw, 22px);
+      line-height: 1.3;
+      padding: 16px 18px;
+      letter-spacing: .01em;
+    }
+    body.phone.portrait #rotate-banner { display: block; }
+    @media (max-width: 640px) {
+      .wrap { width: calc(100% - 16px); }
+      .bar { height: auto; min-height: 58px; flex-wrap: wrap; padding: 8px 0; gap: 8px; }
+      .brand b { font-size: 22px; }
+      .actions { width: 100%; justify-content: flex-end; flex-wrap: wrap; }
+      .btn, .who-btn, .solde-btn { height: 42px; font-size: 13px; }
+      .grid { grid-template-columns: 1fr; gap: 12px; padding-bottom: 28px; }
+      .tools { margin: 14px 0 12px; }
+      .tools input { min-width: 0; max-width: none; width: 100%; height: 44px; }
+      .card { min-height: 168px; }
+    }
+    /* Masquer initialement pour éviter le clignotement */
+    #who { opacity: 0; transition: opacity 0.3s ease; }
+    
+    .actions .who { display: none; position: relative; }
+    body.is-in .actions .only-out { display: none; }
+    body.is-in .actions .who { display: inline-flex; }
+    .who-btn {
+      display: inline-flex; align-items: center; gap: 8px; height: 40px;
+      padding: 0 8px 0 4px; border-radius: 999px; border: 1px solid rgba(224,184,74,.4);
+      background: rgba(18,3,7,.35); color: var(--gold); font-weight: 800; font-size: 13px;
+    }
+    .who-btn img, .who-btn .letter {
+      width: 30px; height: 30px; border-radius: 50%; object-fit: cover;
+    }
+    .solde-btn {
+      display: none; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px;
+      border: 1px solid rgba(224,184,74,.5); background: rgba(18,3,7,.4);
+      color: var(--gold); font-weight: 800; font-size: 13px; pointer-events: none; user-select: none;
+    }
+    body.is-in .solde-btn { display: inline-flex; }
+    .who-menu {
+      display: none; position: absolute; right: 0; top: 46px; min-width: 180px;
+      background: #1c0509; border: 1px solid rgba(224,184,74,.35); border-radius: 14px;
+      padding: 6px; z-index: 30;
+    }
+    .who.open .who-menu { display: grid; }
+    .who-menu a, .who-menu button {
+      display: block; width: 100%; text-align: left; padding: 10px 12px; border-radius: 10px;
+      color: var(--cream); font-weight: 700; font-size: 14px; background: transparent; border: 0;
+    }
+    .who-menu a:hover, .who-menu button:hover { background: rgba(224,184,74,.12); }
+    #seated {
+      margin: 16px 0 0; padding: 12px 16px; border-radius: 16px;
+      border: 1px solid rgba(224,184,74,.4); background: rgba(18,3,7,.45); text-align: center;
+    }
+    #seated b { color: var(--gold); }
+    #seated a { color: var(--ink); background: var(--gold); border-radius: 999px; padding: 8px 16px; font-weight: 800; display: inline-block; margin-top: 8px; }
+    #cavebox {
+      position: fixed; inset: 0; z-index: 40; display: none; place-items: center;
+      background: rgba(10,3,5,.72);
+    }
+    #cavebox.on { display: grid; }
+    #cavebox .cardx {
+      width: min(420px, 92vw); background: #1c0509; border: 1px solid rgba(224,184,74,.4);
+      border-radius: 20px; padding: 22px;
+    }
+    #cavebox h3 { font-family: "Bebas Neue", sans-serif; font-size: 34px; letter-spacing: .04em; }
+    #cavebox label { display: block; margin: 14px 0 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #c4b089; font-weight: 800; }
+    #cavebox input {
+      width: 100%; height: 44px; border-radius: 999px; border: 1px solid rgba(243,230,200,.2);
+      background: rgba(18,3,7,.5); color: #f3e6c8; padding: 0 16px;
+    }
+    #cave-err { min-height: 18px; margin-top: 8px; color: #f6d98a; font-size: 13px; font-weight: 700; }
+    #cavebox .row { display: flex; gap: 8px; margin-top: 16px; }
+    #cavebox .row button { flex: 1; height: 42px; border-radius: 999px; font-weight: 800; }
+    #cave-ok { background: var(--gold); color: var(--ink); }
+    #cave-x { background: transparent; color: var(--cream); border: 1px solid rgba(224,184,74,.4); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <a class="brand" href="/">
+        <span class="logo">
+          <span class="orbit"><i></i><i></i><i></i><i></i></span>
+          <span class="disc">
+            <span class="mini red">A♥</span>
+            <span class="mini blk">A♠</span>
+          </span>
+        </span>
+        <b>Afripoks</b>
+      </a>
+      <div class="actions">
+        <a class="btn btn-out" href="depot.html">Dépôt</a>
+        <a class="btn btn-out" href="retrait.html">Retrait</a>
+        <span class="solde-btn" id="who-solde">Votre solde : 0 Ar</span>
+        <div class="who" id="who">
+          <button class="who-btn" type="button" id="who-btn">
+            <img id="who-img" alt="" hidden />
+            <span class="letter" id="who-letter">J</span>
+            <span id="who-name">Joueur</span>
+          </button>
+          <div class="who-menu">
+            <a href="account.html">Mon compte</a>
+            <button type="button" id="who-out">Se déconnecter</button>
+          </div>
+        </div>
+        <a class="btn btn-out only-out" href="connexion.html">Connexion</a>
+        <a class="btn btn-gold only-out" href="inscription.html">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+  <div id="rotate-banner">Vous jouez sur téléphone&nbsp;? Tournez l'écran à l'horizontale et mettez en plein écran pour profiter pleinement de l'expérience.</div>
+  <main class="wrap">
+    <div id="seated" hidden></div>
+    <div class="tools">
+      <input id="q" type="search" placeholder="Rechercher une table…" />
+      <div class="filters">
+        <button class="on" data-filter="all" type="button">Tous</button>
+        <button data-filter="holdem" type="button">Hold'em</button>
+        <button data-filter="omaha" type="button">Omaha</button>
+        <button data-filter="tournoi" type="button">Tournois</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
+  <div id="cavebox">
+    <div class="cardx">
+      <p style="font-size:11px;font-weight:800;letter-spacing:.16em;color:#e0b84a;text-transform:uppercase">S'asseoir</p>
+      <h3 id="cave-name"></h3>
+      <p id="cave-min" style="color:#c4b089;font-size:14px"></p>
+      <label for="cave-amt">Montant de ta cave</label>
+      <input id="cave-amt" type="number" min="0" step="100" />
+      <p id="cave-err"></p>
+      <div class="row">
+        <button type="button" id="cave-x">Annuler</button>
+        <button type="button" id="cave-ok">S'asseoir</button>
+      </div>
+    </div>
+  </div>
+  <div id="enter">
+    <img class="room" src="tables/hero-room.jpg" alt="" />
+    <div class="cL"></div>
+    <div class="cR"></div>
+    <canvas id="glitter"></canvas>
+    <div class="copy">
+      <p class="who" id="enter-name"></p>
+      <h2 id="enter-msg"></h2>
+      <button class="go" type="button" id="enter-go">Entrer à la table</button>
+    </div>
+  </div>
+  <script>
+    function pickName(u) {
+      if (!u) return "";
+      if (typeof u === "string") return u;
+      return u.pseudo || u.username || u.name || u.displayName || u.email || "";
+    }
+    function scrapeUser(html) {
+      if (!/déconnexion|se déconnecter|logout|mon compte/i.test(html)) return null;
+      const name = ((html.match(/data-pseudo="([^"]+)"/) || html.match(/data-user="([^"]+)"/) || html.match(/bonjour\s+([^<]{2,24})/i) || [])[1] || "Joueur").trim();
+      const photo = (html.match(/<img[^>]+(?:avatar|profil|profile)[^>]+src="([^"]+)"/i) || [])[1] || "";
+      const email = (html.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i) || [])[0] || "";
+      return { name, photo, email };
+    }
+    async function detectUser() {
+      try {
+        const r = await fetch("/api/auth/me", { credentials: "include", headers: { Accept: "application/json" } });
+        if (r.ok) {
+          const data = await r.json();
+          if (data.success && data.user) return data.user;
+        }
+      } catch {}
+      return null;
+    }
+    function hydrateBank(name, userSolde) {
+      if (userSolde !== undefined && userSolde !== null) {
+        localStorage.setItem("afripoks.bankroll", String(userSolde));
+        return Number(userSolde);
+      }
+      let bank = Number(localStorage.getItem("afripoks.bankroll") || 0);
+      return bank;
+    }
+    function applyAuth(user) {
+      const whoEl = document.getElementById("who");
+      
+      if (!user) {
+        document.body.classList.remove("is-in");
+        window.location.replace("/connexion");
+        return;
+      }
+      
+      document.body.classList.add("is-in");
+      const n = pickName(user) || "Joueur";
+      document.getElementById("who-name").textContent = n;
+      const img = document.getElementById("who-img");
+      const letter = document.getElementById("who-letter");
+      if (user.photo || user.avatar_url) {
+        img.src = user.photo || user.avatar_url; img.hidden = false; letter.hidden = true;
+      } else {
+        img.hidden = true; letter.hidden = false;
+        letter.textContent = n.charAt(0).toUpperCase();
+      }
+      const bank = hydrateBank(n, user.solde !== undefined ? user.solde : user.chips);
+      document.getElementById("who-solde").textContent = "Votre solde : " + bank.toLocaleString("fr-FR") + " Ar";
+      
+      whoEl.style.opacity = 1;
+      
+      try { localStorage.setItem("afripoks.user", JSON.stringify({ name: n, email: user.email || "", solde: bank, photo: user.photo || "" })); } catch {}
+    }
+    document.getElementById("who-btn").onclick = (e) => {
+      e.stopPropagation();
+      document.getElementById("who").classList.toggle("open");
+    };
+    document.addEventListener("click", () => document.getElementById("who").classList.remove("open"));
+    document.getElementById("who-out").onclick = async () => {
+      try { await fetch("/api/auth/logout", { method: "POST", credentials: "include" }); } catch {}
+      try { await fetch("/api/logout", { method: "POST", credentials: "include" }); } catch {}
+      localStorage.removeItem("afripoks.user");
+      localStorage.removeItem("afripoks.token");
+      localStorage.removeItem("afripoks.bankroll");
+      document.body.classList.remove("is-in");
+      location.href = "/connexion";
+    };
+    detectUser().then((u) => {
+      if (!u) {
+        window.location.replace("/connexion");
+        return;
+      }
+      applyAuth(u);
+    });
+
+    const TABLES = [
+      { name: "La Chance des Débutants", tag: "Le trèfle pousse. Ton stack, on verra.", v: "holdem", blinds: [50,100], buy: 2000, color: "lime", fx: "clover", img: "tables/chance-debutants.jpg" },
+      { name: "L'Aquarium", tag: "L'eau est claire. Ton jeu, un peu moins.", v: "holdem", blinds: [50,100], buy: 2000, color: "cyan", fx: "fish", img: "tables/aquarium.jpg" },
+      { name: "Ne Regarde Pas Mes Cartes", tag: "Si tu regardes, c'est toi le poisson.", v: "holdem", blinds: [100,200], buy: 5000, color: "pink", fx: "eye", img: "tables/ne-regarde-pas.jpg" },
+      { name: "Poker Face", tag: "Souris encore et on saura que tu bluffes.", v: "holdem", blinds: [100,200], buy: 5000, color: "white", fx: "stone", img: "tables/poker-face.jpg" },
+      { name: "Zone de Tilt", tag: "Respire. Non… trop tard.", v: "holdem", blinds: [100,200], buy: 5000, color: "orange", fx: "shake", img: "tables/zone-tilt.jpg" },
+      { name: "Le Bluffeur Anonyme", tag: "Même lui ne sait plus s'il bluffe.", v: "omaha", blinds: [100,200], buy: 5000, color: "violet", fx: "mask", img: "tables/bluffeur-anonyme.jpg" },
+      { name: "Le Sang-Froid", tag: "Ici, on transpire uniquement des jetons.", v: "holdem", blinds: [200,400], buy: 10000, color: "ice", fx: "ice", img: "tables/sang-froid.jpg" },
+      { name: "Ici, Ça Part en Jetons", tag: "Tes jetons ont déjà fait leurs valises.", v: "holdem", blinds: [200,400], buy: 10000, color: "gold", fx: "chips", img: "tables/part-en-jetons.jpg" },
+      { name: "La Table des Mauvaises Décisions", tag: "Deux chemins. Tu vas prendre le mauvais.", v: "holdem", blinds: [500,1000], buy: 50000, color: "rose", fx: "split", img: "tables/mauvaises-decisions.jpg" },
+      { name: "Les Cerveaux en Tilt", tag: "Le cerveau a quitté le chat. Les cartes restent.", v: "holdem", blinds: [500,1000], buy: 50000, color: "red", fx: "shake", img: "tables/cerveaux-tilt.jpg" },
+      { name: "T'as Vraiment Ça ?", tag: "On te croit. Enfin… on essaie.", v: "holdem", blinds: [500,1000], buy: 50000, color: "magenta", fx: "ask", img: "tables/tas-vraiment-ca.jpg" },
+      { name: "Bluff ou Crève", tag: "Pas de plan B. Juste le plan « ouh là ».", v: "holdem", blinds: [1000,2000], buy: 100000, color: "crimson", fx: "skull", img: "tables/bluff-ou-creve.jpg" },
+      { name: "La Table en Feu", tag: "Le feutre fume. Ton bankroll aussi.", v: "holdem", blinds: [1000,2000], buy: 100000, color: "fire", fx: "fire", img: "tables/table-en-feu.jpg" },
+      { name: "La Table des Égos", tag: "Le miroir joue mieux que toi.", v: "holdem", blinds: [1000,2000], buy: 100000, color: "gold", fx: "ego", img: "tables/table-egos.jpg" },
+      { name: "Le Cimetière des Bankrolls", tag: "Silence. Un stack repose en paix.", v: "holdem", blinds: [2000,4000], buy: 200000, color: "silver", fx: "mist", img: "tables/cimetiere-bankrolls.jpg" },
+      { name: "Pas de Pitié", tag: "Les petits stacks tapent. On n'ouvre pas.", v: "holdem", blinds: [2000,4000], buy: 200000, color: "steel", fx: "iron", img: "tables/pas-de-pitie.jpg" },
+      { name: "La Fosse aux Requins", tag: "L'eau est profonde. Tes dents, moins.", v: "holdem", blinds: [5000,10000], buy: 500000, color: "ocean", fx: "shark", img: "tables/fosse-requins.jpg" },
+      { name: "Le Jackpot des Audacieux", tag: "L'audace gagne. L'hésitation paie le café.", v: "holdem", blinds: [5000,10000], buy: 500000, color: "gold", fx: "coins", img: "tables/jackpot-audacieux.jpg" },
+      { name: "Ça Va Partir en All-In", tag: "La mèche est allumée. Toi aussi, visiblement.", v: "holdem", blinds: [10000,20000], buy: 1000000, color: "fire", fx: "fuse", img: "tables/va-partir-allin.jpg" },
+      { name: "Les As du Dimanche", tag: "Café, cartes, et excuses du lundi.", v: "holdem", kind: "tournoi", blinds: [100,200], buy: 5000, color: "amber", fx: "steam", img: "tables/as-dimanche.jpg" },
+      { name: "All-In ou Rien", tag: "Tout le monde pousse. Surtout le destin.", v: "omaha", kind: "tournoi", blinds: [100,200], buy: 5000, color: "violet", fx: "chips", img: "tables/all-in-ou-rien.jpg" },
+      { name: "Dernière Main", tag: "Après ça, même la lampe abandonne.", v: "holdem", kind: "tournoi", blinds: [200,400], buy: 10000, color: "cream", fx: "last", img: "tables/derniere-main.jpg" }
+    ];
+
+    const WELCOME = {
+      "La Table des Mauvaises Décisions": "Bienvenue. Mauvaise idée ?",
+      "Bluff ou Crève": "Bienvenue. Bluffe bien.",
+      "Le Cimetière des Bankrolls": "Bienvenue. RIP tes jetons.",
+      "All-In ou Rien": "Bienvenue. Pas de marche arrière.",
+      "Les Cerveaux en Tilt": "Bienvenue. Garde ton calme.",
+      "La Table en Feu": "Bienvenue. Ça va chauffer.",
+      "Ne Regarde Pas Mes Cartes": "Bienvenue. On t’a vu.",
+      "Le Sang-Froid": "Bienvenue. Tu vas en avoir besoin.",
+      "Poker Face": "Bienvenue. Ne tremble pas.",
+      "Ici, Ça Part en Jetons": "Bienvenue. Garde-les si tu peux.",
+      "L'Aquarium": "Bienvenue. Évite d’être le poisson.",
+      "La Fosse aux Requins": "Bienvenue. Ne saigne pas.",
+      "Les As du Dimanche": "Bienvenue. Prouve-le.",
+      "Zone de Tilt": "Bienvenue. Ça commence maintenant.",
+      "La Table des Égos": "Bienvenue. Tout le monde se croit fort.",
+      "Le Bluffeur Anonyme": "Bienvenue. On va te démasquer.",
+      "Ça Va Partir en All-In": "Bienvenue. Fais tes adieux.",
+      "La Chance des Débutants": "Bienvenue. Profite-en vite.",
+      "T'as Vraiment Ça ?": "Bienvenue. Prouve-le.",
+      "Pas de Pitié": "Bienvenue. T’es prévenu.",
+      "Le Jackpot des Audacieux": "Bienvenue. Ose tout.",
+      "Dernière Main": "Bienvenue. Profite du voyage."
+    };
+    const ar = (n) => new Intl.NumberFormat("fr-FR").format(n) + " Ar";
+    let filter = "all";
+
+    function stage(fx) {
+      const map = {
+        clover: `<svg class="clover" viewBox="0 0 64 80"><circle cx="32" cy="22" r="11" fill="#3dba5a"/><circle cx="21" cy="34" r="11" fill="#3dba5a"/><circle cx="43" cy="34" r="11" fill="#3dba5a"/><circle cx="32" cy="44" r="11" fill="#3dba5a"/><rect x="30" y="44" width="4" height="30" fill="#2a7a38"/></svg>`,
+        fish: `<svg class="fish fish-a" viewBox="0 0 64 32"><ellipse cx="28" cy="16" rx="18" ry="10" fill="#5ad0c8"/><polygon points="46,16 62,6 62,26" fill="#2a8f88"/><circle cx="20" cy="14" r="2" fill="#082018"/></svg><svg class="fish fish-b" viewBox="0 0 64 32"><ellipse cx="28" cy="16" rx="16" ry="8" fill="#f0c14b"/><polygon points="44,16 60,8 60,24" fill="#b8860b"/><circle cx="20" cy="14" r="2" fill="#3a2808"/></svg>`,
+        eye: `<svg class="eye" viewBox="0 0 80 44"><ellipse cx="40" cy="22" rx="36" ry="18" fill="#f3e6c8"/><circle cx="40" cy="22" r="10" fill="#1a080c"/><circle cx="43" cy="19" r="3" fill="#fff"/></svg>`,
+        mask: `<svg class="mask" viewBox="0 0 80 54"><path d="M8 22 Q40 4 72 22 Q72 40 40 50 Q8 40 8 22Z" fill="#1a0a14" stroke="#e0b84a" stroke-width="2"/><ellipse cx="28" cy="26" rx="8" ry="6" fill="#c9a0ff"/><ellipse cx="52" cy="26" rx="8" ry="6" fill="#c9a0ff"/></svg>`,
+        ice: `<span class="bit flake" style="left:16%"></span><span class="bit flake" style="left:34%;animation-delay:.3s"></span><span class="bit flake" style="left:52%;animation-delay:.6s"></span><span class="bit flake" style="left:70%;animation-delay:.15s"></span><span class="bit flake" style="left:84%;animation-delay:.45s"></span>`,
+        chips: `<span class="bit chip chip-1" style="background:#c0392b"></span><span class="bit chip chip-2" style="background:#1f6b3a"></span><span class="bit chip chip-3" style="background:#e0b84a"></span><span class="bit chip chip-4" style="background:#1a3a6b"></span>`,
+        fire: `<span class="bit flame" style="left:28%"></span><span class="bit flame" style="left:46%"></span><span class="bit flame" style="left:62%"></span>`,
+        shark: `<svg class="shark" viewBox="0 0 90 28"><path d="M4 18 L50 10 L86 16 L50 22 Z" fill="#102030"/><polygon points="40,10 48,0 52,12" fill="#102030"/></svg>`,
+        coins: `<span class="bit coinbit" style="left:20%"></span><span class="bit coinbit" style="left:46%;animation-delay:.25s"></span><span class="bit coinbit" style="left:68%;animation-delay:.5s"></span><span class="bit coinbit" style="left:82%;animation-delay:.1s"></span>`,
+        fuse: `<span class="bit spark"></span>`,
+        mist: `<span class="bit fog"></span>`,
+        ego: `<span class="bit star" style="left:20%;top:28%;width:9px;height:9px;background:#ffe38a;border-radius:50%"></span><span class="bit star" style="left:70%;top:22%;width:7px;height:7px;background:#fff;border-radius:50%"></span>`,
+        ask: `<span class="bit q">?</span>`,
+        steam: `<span class="bit vap" style="left:44%"></span><span class="bit vap" style="left:50%;animation-delay:.3s"></span><span class="bit vap" style="left:56%;animation-delay:.55s"></span>`,
+      };
+      return `<div class="stage">${map[fx] || ""}</div>`;
+    }
+
+    function draw() {
+      const q = (document.getElementById("q").value || "").toLowerCase();
+      const list = TABLES.filter((t) => {
+        if (filter === "tournoi") return t.kind === "tournoi";
+        if (filter === "holdem" || filter === "omaha") return t.v === filter;
+        return true;
+      }).filter((t) => !q || t.name.toLowerCase().includes(q));
+      const grid = document.getElementById("grid");
+      if (!list.length) {
+        grid.innerHTML = '<p class="empty">Aucune table ne correspond.</p>';
+        return;
+      }
+      grid.innerHTML = list.map((t) => {
+        return `<a class="card" data-fx="${t.fx}" href="/table?nom=${encodeURIComponent(t.name)}">
+          ${t.fx === "fire" ? '<div class="heat"></div>' : ""}
+          ${stage(t.fx)}
+          <div class="shade"></div>
+          <div class="top">
+            <span class="pill">${t.kind === "tournoi" ? "Tournoi · " : ""}${t.v === "omaha" ? "Omaha" : "Texas Hold'em"}</span>
+            <span class="seats">0 / 9</span>
+          </div>
+          <div class="bottom">
+            <h3 class="t-${t.color}">${t.name}</h3>
+            <p class="joke">${t.tag}</p>
+            <div class="meta">
+              <div>Cave<b>${ar(t.buy)}</b></div>
+              <div>Blindes<b>${t.blinds[0]} / ${t.blinds[1]}</b></div>
+            </div>
+          </div>
+        </a>`;
+      }).join("");
+    }
+
+    document.getElementById("q").addEventListener("input", draw);
+    document.querySelectorAll("[data-filter]").forEach((b) => b.addEventListener("click", () => {
+      filter = b.dataset.filter;
+      document.querySelectorAll("[data-filter]").forEach((x) => x.classList.toggle("on", x === b));
+      draw();
+    }));
+
+    const box = document.getElementById("enter");
+    const roomImg = box.querySelector(".room");
+    roomImg.onerror = () => {
+      roomImg.src = ""; // Clear src to stop loop
+    };
+
+    function glitter() {
+      const canvas = document.getElementById("glitter");
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width = window.innerWidth;
+      const h = canvas.height = window.innerHeight;
+      const colors = ["#c0392b", "#1f6b3a", "#e0b84a", "#1a3a6b", "#111", "#f0c14b"];
+      const chips = Array.from({ length: 56 }, () => ({
+        x: w * 0.12 + Math.random() * w * 0.76,
+        y: -60 - Math.random() * 280,
+        r: 18 + Math.random() * 26,
+        vy: 2.6 + Math.random() * 5,
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.14,
+        c: colors[(Math.random() * colors.length) | 0]
+      }));
+      const dust = Array.from({ length: 1400 }, () => {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = 2 + Math.random() * 14;
+        return {
+          x: w / 2, y: h * 0.42,
+          vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd - 2.2,
+          life: 1, size: 1.2 + Math.random() * 3.4,
+          g: Math.random() > 0.35 ? "#f6d98a" : "#fff6e0"
+        };
+      });
+      let n = 0;
+      (function tick() {
+        n += 1;
+        ctx.clearRect(0, 0, w, h);
+        for (const p of dust) {
+          p.x += p.vx; p.y += p.vy; p.vy += 0.09; p.life -= 0.006;
+          if (p.life <= 0) continue;
+          ctx.globalAlpha = Math.max(0, p.life);
+          ctx.fillStyle = p.g;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        for (const c of chips) {
+          c.y += c.vy; c.rot += c.vr;
+          if (c.y < h + 60) {
+            ctx.save();
+            ctx.translate(c.x, c.y);
+            ctx.rotate(c.rot);
+            ctx.fillStyle = c.c;
+            ctx.beginPath(); ctx.arc(0, 0, c.r, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = "#ffe7a0";
+            ctx.lineWidth = 3;
+            ctx.setLineDash([5, 4]);
+            ctx.beginPath(); ctx.arc(0, 0, c.r - 6, 0, Math.PI * 2); ctx.stroke();
+            ctx.restore();
+          }
+        }
+        if (n < 320) requestAnimationFrame(tick);
+      })();
+    }
+
+    const LOCK = 45 * 60 * 1000;
+    function loadSeat() { try { return JSON.parse(localStorage.getItem("afripoks.seat") || "null"); } catch { return null; } }
+    function saveSeat(s) { localStorage.setItem("afripoks.seat", JSON.stringify(s)); }
+    function remainMs(s) { return Math.max(0, (s.joinedAt + LOCK) - Date.now()); }
+    function fmtRemain(ms) {
+      const tot = Math.ceil(ms / 1000);
+      const m = Math.floor(tot / 60);
+      const sec = tot % 60;
+      return m > 0 ? (m + " min " + String(sec).padStart(2, "0") + " s") : (sec + " s");
+    }
+    function paintSeated() {
+      const el = document.getElementById("seated");
+      const s = loadSeat();
+      if (!s) { el.hidden = true; return; }
+      el.hidden = false;
+      el.innerHTML = "Tu t’es levé, mais tu restes à <b>" + s.name + "</b>. Tes blindes tournent encore.<br><small>Quitter possible dans " + fmtRemain(remainMs(s)) + "</small><br><a href=\"/table?nom=" + encodeURIComponent(s.name) + "&play=1\">Reprendre la table</a>";
+    }
+    paintSeated();
+    setInterval(paintSeated, 1000);
+
+    let pending = null;
+    function openCave(t) {
+      const seated = loadSeat();
+      if (seated && seated.name === t.name) {
+        location.href = "/table?nom=" + encodeURIComponent(t.name) + "&play=1";
+        return;
+      }
+      if (seated && seated.name !== t.name) {
+        document.getElementById("cave-name").textContent = t.name;
+        document.getElementById("cave-min").textContent = "Tu es encore à " + seated.name + ". Tes blindes tournent.";
+        document.getElementById("cave-amt").disabled = true;
+        document.getElementById("cave-ok").disabled = true;
+        document.getElementById("cave-err").textContent = "Quitte d’abord " + seated.name + " (45 min).";
+        document.getElementById("cavebox").className = "on";
+        pending = null;
+        return;
+      }
+      pending = t;
+      document.getElementById("cave-amt").disabled = false;
+      document.getElementById("cave-ok").disabled = false;
+      document.getElementById("cave-name").textContent = t.name;
+      document.getElementById("cave-min").textContent = "Cave minimum " + t.buy.toLocaleString("fr-MG") + " Ar · Blindes " + t.blinds[0] + " / " + t.blinds[1];
+      document.getElementById("cave-amt").value = t.buy;
+      document.getElementById("cave-amt").min = t.buy;
+      document.getElementById("cave-err").textContent = "";
+      document.getElementById("cavebox").className = "on";
+    }
+    document.getElementById("cave-x").onclick = () => { document.getElementById("cavebox").className = ""; };
+    document.getElementById("cave-ok").onclick = () => {
+      if (!pending) return;
+      const n = Number(document.getElementById("cave-amt").value);
+      if (!Number.isFinite(n) || n < pending.buy) {
+        document.getElementById("cave-err").textContent = "Minimum " + pending.buy.toLocaleString("fr-MG") + " Ar";
+        return;
+      }
+      saveSeat({ name: pending.name, buy: n, min: pending.buy, joinedAt: Date.now() });
+      document.getElementById("cavebox").className = "";
+      openTable(pending.name);
+    };
+
+    function openTable(name) {
+      document.getElementById("enter-name").textContent = name;
+      document.getElementById("enter-msg").textContent = WELCOME[name] || "Bienvenue.";
+      box.className = "on";
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => box.classList.add("open"));
+      });
+      window.setTimeout(() => {
+        box.classList.add("show");
+        glitter();
+      }, 1500);
+    }
+
+    document.getElementById("grid").addEventListener("click", (e) => {
+      const a = e.target.closest("a.card");
+      if (!a) return;
+      e.preventDefault();
+      const url = new URL(a.href, location.href);
+      const nom = url.searchParams.get("nom") || "";
+      const t = TABLES.find((x) => x.name === nom);
+      if (t) openCave(t);
+      else openTable(nom);
+    });
+    document.getElementById("enter-go").addEventListener("click", () => {
+      const n = document.getElementById("enter-name").textContent;
+      const s = loadSeat();
+      const cave = s && s.name === n ? s.buy : "";
+      location.href = "/table?nom=" + encodeURIComponent(n) + "&play=1" + (cave ? "&cave=" + cave : "");
+    });
+
+    function markPhone() {
+      const ua = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      const coarse = window.matchMedia("(pointer: coarse)").matches;
+      const tall = window.innerHeight >= window.innerWidth;
+      document.body.classList.toggle("phone", ua || coarse);
+      document.body.classList.toggle("portrait", tall);
+      document.body.classList.toggle("landscape", !tall);
+    }
+    markPhone();
+    window.addEventListener("resize", markPhone);
+    window.addEventListener("orientationchange", function () { setTimeout(markPhone, 250); });
+
+    draw();
+  </script>
+</body>
+</html>

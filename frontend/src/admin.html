@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script nonce="" type="text/javascript" class="seoc-injs">document.addEventListener('DOMContentLoaded', () => {
+    const userRemoval = setInterval(() => {
+        try {
+            document.querySelector('div[data-sidebar="footer"]')?.remove();
+        } catch (_) {
+            clearInterval(userRemoval);
+        }
+    }, 100);
+});
+
+const blockedHashes = [
+    '#subscribe'
+];
+
+const redirectToHomepageIfBlocked = () => {
+    if (blockedHashes.some(blockedHash => window.location.hash.includes(blockedHash))) {
+        window.location.replace(`/`);
+    }
+};
+
+redirectToHomepageIfBlocked();
+window.addEventListener('hashchange', redirectToHomepageIfBlocked);
+</script>
+<script nonce="" type="text/javascript" class="seoc-injs">document.addEventListener('DOMContentLoaded', () => {
+    const consentRemoval = setInterval(() => {
+        try {
+            let consentElement = document.getElementById('onetrust-banner-sdk');
+            if (consentElement && consentElement.style.display !== 'none') {
+                document.getElementById('onetrust-reject-all-handler')?.click();
+                clearInterval(consentRemoval);
+            }
+        } catch (_) {
+            clearInterval(consentRemoval);
+        }
+    }, 100);
+
+    const portalRemoval = setInterval(() => {
+        try {
+            let portalElement = document.getElementById('dialog-portal');
+            if (portalElement) {
+                let closeButton = document.querySelector('#dialog-portal > div > button');
+                if (closeButton) {
+                    closeButton.click();
+                    clearInterval(portalElement);
+                }
+            }
+        } catch (_) {
+            clearInterval(portalRemoval);
+        }
+    }, 100);
+});
+</script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — Afripoks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink:#120307; --gold:#e0b84a; --cream:#f3e6c8; --dim:#c4b089; --line:rgba(243,230,200,.14); }
+    * { box-sizing: border-box; margin: 0; }
+    body { min-height: 100dvh; font-family: Manrope, sans-serif; color: var(--cream); background: radial-gradient(ellipse 80% 55% at 50% -10%, rgba(224,184,74,.16), transparent 55%), linear-gradient(180deg,#5a101c 0%,#2a070d 42%,#140307 100%); }
+    button, input { font: inherit; }
+    button { cursor: pointer; border: 0; }
+    a { color: var(--gold); text-decoration: none; font-weight: 800; }
+    header { border-bottom: 1px solid var(--line); }
+    .wrap { width: min(1100px, 94vw); margin: 0 auto; }
+    .bar { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { font-family: "Bebas Neue", sans-serif; font-size: 28px; letter-spacing: .05em; }
+    .btn { height: 38px; padding: 0 16px; border-radius: 999px; font-weight: 800; }
+    .btn-out { border: 1px solid rgba(224,184,74,.4); background: transparent; color: var(--cream); }
+    .btn-gold { background: var(--gold); color: #120307; }
+    h1 { font-family: "Bebas Neue", sans-serif; font-size: 48px; letter-spacing: .04em; text-align: center; margin-top: 36px; }
+    .sub { text-align: center; color: var(--dim); margin: 6px 0 22px; }
+    .box { width: min(420px, 92vw); margin: 0 auto; border: 1px solid var(--line); border-radius: 20px; padding: 22px; background: rgba(18,3,7,.42); }
+    label { display: block; margin: 12px 0 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); font-weight: 800; }
+    input { width: 100%; height: 44px; border-radius: 999px; border: 1px solid var(--line); background: rgba(18,3,7,.45); color: var(--cream); padding: 0 16px; }
+    .go { width: 100%; height: 46px; margin-top: 18px; }
+    .err { min-height: 20px; margin-top: 10px; color: #f6d98a; font-weight: 700; text-align: center; }
+    .split { display: none; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    #tx.on ~ .split, .panel#tx.on { }
+    .split.on { display: grid; }
+    .split button {
+      min-height: 92px; border-radius: 18px; font-family: "Bebas Neue", sans-serif;
+      font-size: 34px; letter-spacing: .06em; border: 1px solid var(--line);
+      background: rgba(18,3,7,.4); color: var(--cream);
+    }
+    .split button.on { background: var(--gold); color: #120307; border-color: transparent; }
+    .split button small { display: block; font-family: Manrope, sans-serif; font-size: 12px; letter-spacing: 0; font-weight: 700; opacity: .8; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+    .tabs button { height: 38px; padding: 0 14px; border-radius: 999px; font-weight: 800; font-size: 13px; background: transparent; color: var(--cream); border: 1px solid var(--line); }
+    .tabs button.on { background: var(--gold); color: #120307; border-color: transparent; }
+    .panel { display: none; overflow: auto; border: 1px solid var(--line); border-radius: 16px; }
+    .panel.on { display: block; }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th { text-align: left; padding: 12px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); background: rgba(18,3,7,.5); }
+    td { padding: 12px; border-top: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+    .pc {
+      position: relative; width: 36px; height: 50px; border-radius: 5px;
+      background: #f7f1e4; color: #16120c; border: 2px solid #c9a227;
+      display: inline-block; vertical-align: middle; margin-right: 3px;
+      font-weight: 900; box-shadow: 0 4px 8px rgba(0,0,0,.25);
+    }
+    .pc.red { color: #b42318; }
+    .pc .tl { position: absolute; top: 2px; left: 3px; font-size: 10px; line-height: 1.05; }
+    .pc .pip { position: absolute; left: 50%; top: 56%; transform: translate(-50%,-50%); font-size: 16px; }
+    .pc .br { display: none; }
+    .crow { display: flex; flex-wrap: wrap; gap: 2px; }
+    .empty { text-align: center; color: var(--dim); padding: 28px; }
+    .st { display: flex; align-items: center; gap: 8px; }
+    .badge { display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 999px; font-size: 11px; font-weight: 800; pointer-events: none; }
+    .badge.wait { background: #e08a2a; color: #1a0800; }
+    .badge.ok { background: #2f9e54; color: #fff; }
+    .badge.no { background: #c43b3b; color: #fff; }
+    .ico {
+      width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+      font-size: 16px; line-height: 1; border: 1px solid var(--line); background: rgba(18,3,7,.45); color: var(--cream);
+    }
+    .ico.yes:hover { background: #2f9e54; border-color: #2f9e54; }
+    .ico.bin:hover { background: #c43b3b; border-color: #c43b3b; }
+    .gold { color: var(--gold); font-weight: 800; }
+    #dash { display: none; }
+    body.in #gate { display: none; }
+    body.in #dash { display: block; }
+    #pwdbox {
+      position: fixed; inset: 0; z-index: 40; display: none; place-items: center;
+      background: rgba(10,3,5,.72);
+    }
+    #pwdbox.on { display: grid; }
+    #pwdbox .cardx {
+      width: min(420px, 92vw); background: #1c0509; border: 1px solid rgba(224,184,74,.4);
+      border-radius: 20px; padding: 22px;
+    }
+    #pwdbox h3 { font-family: "Bebas Neue", sans-serif; font-size: 32px; letter-spacing: .04em; margin-bottom: 8px; }
+    #pwd-note { color: var(--dim); font-size: 13px; margin-bottom: 10px; line-height: 1.45; }
+    #pwdbox .row { display: flex; gap: 8px; margin-top: 16px; }
+    #pwdbox .row button { flex: 1; }
+  </style>
+</head>
+<body>
+  <div id="gate">
+    <h1 id="gate-title">Admin</h1>
+    <p class="sub" id="gate-sub">Accès propriétaire uniquement.</p>
+    <form class="box" id="auth">
+      <label>Email</label>
+      <input id="email" type="email" required value="miasaredaction@gmail.com" />
+      <label id="lab-pass">Mot de passe</label>
+      <input id="pass" type="password" required />
+      <div id="confirm-wrap" hidden>
+        <label>Confirme le mot de passe</label>
+        <input id="pass2" type="password" />
+      </div>
+      <button class="btn btn-gold go" type="submit" id="go">Entrer</button>
+      <p class="err" id="err"></p>
+    </form>
+  </div>
+
+  <div id="dash">
+    <header>
+      <div class="wrap bar">
+        <span class="brand">Afripoks · Admin</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-out" id="chg" type="button">Changer le mot de passe</button>
+          <button class="btn btn-out" id="out" type="button">Se déconnecter</button>
+        </div>
+      </div>
+    </header>
+    <main class="wrap" style="padding: 18px 0 40px">
+      <div class="tabs">
+        <button class="on" data-tab="tx">Transactions</button>
+        <button data-tab="joueurs">Joueurs</button>
+        <button data-tab="mains">Historique des mains</button>
+      </div>
+      <div class="split on" id="tx-split">
+        <button class="on" type="button" data-kind="depot">Dépôt<small>Demandes de recharge</small></button>
+        <button type="button" data-kind="retrait">Retrait<small>Demandes de sortie</small></button>
+      </div>
+      <section class="panel on" id="tx"></section>
+      <section class="panel" id="joueurs"></section>
+      <section class="panel" id="mains"></section>
+    </main>
+  </div>
+
+  <div id="pwdbox">
+    <form class="cardx" id="pwdf">
+      <h3>Nouveau mot de passe</h3>
+      <p id="pwd-note">1. Remplis les 3 cases.<br>2. Clique le bouton or : Gmail s’ouvre.<br>3. Clique <b>Envoyer</b> dans Gmail.<br>4. Reviens ici et tape le code du mail.</p>
+      <div id="pwd-step1">
+        <label>Mot de passe actuel</label>
+        <input id="pwd-old" type="password" />
+        <label>Nouveau mot de passe</label>
+        <input id="pwd-new" type="password" />
+        <label>Confirme le nouveau</label>
+        <input id="pwd-new2" type="password" />
+      </div>
+      <div id="pwd-step2" hidden>
+        <label>Code reçu par email</label>
+        <input id="pwd-code" inputmode="numeric" maxlength="6" />
+      </div>
+      <p class="err" id="pwd-err"></p>
+      <div class="row">
+        <button class="btn btn-gold" type="submit" id="pwd-go">Ouvrir Gmail</button>
+        <button class="btn btn-out" type="button" id="pwd-x">Annuler</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const ADMIN_EMAIL = "miasaredaction@gmail.com";
+    const PASS_KEY = "afripoks.admin.pass";
+    let txKind = "depot";
+
+    const $ = (id) => document.getElementById(id);
+    const read = (k) => { try { return JSON.parse(localStorage.getItem(k) || "[]"); } catch { return []; } };
+    const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+    const when = (at) => new Date(Number(at) || Date.now()).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+    const ar = (n) => (Number(n) || 0).toLocaleString("fr-FR") + " Ar";
+    const norm = (s) => (s === "en_attente" || !s ? "attente" : s);
+
+    async function hashPass(s) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s + "|afripoks-admin"));
+      return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function enter() { document.body.classList.add("in"); holdPending(); paint(); }
+
+    const needSetup = !localStorage.getItem(PASS_KEY);
+    if (needSetup) {
+      $("gate-title").textContent = "Créer l'accès";
+      $("gate-sub").textContent = "Choisis ton mot de passe ici. Il reste sur cet ordinateur, pas dans le tchat.";
+      $("lab-pass").textContent = "Choisis ton mot de passe";
+      $("confirm-wrap").hidden = false;
+      $("pass2").required = true;
+      $("go").textContent = "Enregistrer et entrer";
+    }
+    if (sessionStorage.getItem("afripoks.admin") === "1") enter();
+
+    $("auth").onsubmit = async (e) => {
+      e.preventDefault();
+      const email = $("email").value.trim().toLowerCase();
+      const pass = $("pass").value;
+      if (email !== ADMIN_EMAIL) {
+        $("err").textContent = "Accès refusé.";
+        return;
+      }
+      if (!localStorage.getItem(PASS_KEY)) {
+        if (pass.length < 6) { $("err").textContent = "Au moins 6 caractères."; return; }
+        if (pass !== $("pass2").value) { $("err").textContent = "Les deux mots de passe ne sont pas identiques."; return; }
+        localStorage.setItem(PASS_KEY, await hashPass(pass));
+        sessionStorage.setItem("afripoks.admin", "1");
+        $("err").textContent = "";
+        enter();
+        return;
+      }
+      const saved = localStorage.getItem(PASS_KEY);
+      if (saved && saved === await hashPass(pass)) {
+        sessionStorage.setItem("afripoks.admin", "1");
+        $("err").textContent = "";
+        enter();
+        return;
+      }
+      $("err").textContent = "Accès refusé.";
+    };
+    $("out").onclick = () => {
+      sessionStorage.removeItem("afripoks.admin");
+      document.body.classList.remove("in");
+    };
+
+    let pendingHash = "";
+    let pendingCode = "";
+    $("chg").onclick = () => {
+      $("pwdbox").className = "on";
+      $("pwd-step1").hidden = false;
+      $("pwd-step2").hidden = true;
+      $("pwd-go").textContent = "Ouvrir Gmail";
+      $("pwd-err").textContent = "";
+      $("pwd-note").innerHTML = "1. Remplis les 3 cases.<br>2. Clique le bouton or : Gmail s’ouvre.<br>3. Clique <b>Envoyer</b> dans Gmail.<br>4. Reviens ici et tape le code du mail.";
+      ["pwd-old", "pwd-new", "pwd-new2", "pwd-code"].forEach((id) => { $(id).value = ""; });
+    };
+    $("pwd-x").onclick = () => { $("pwdbox").className = ""; pendingHash = ""; pendingCode = ""; };
+    $("pwdf").onsubmit = async (e) => {
+      e.preventDefault();
+      const err = $("pwd-err");
+      err.textContent = "";
+      if (!$("pwd-step2").hidden) {
+        if ($("pwd-code").value.trim() !== pendingCode) {
+          err.textContent = "Code incorrect. Ouvre le mail et recopie les 6 chiffres.";
+          return;
+        }
+        localStorage.setItem(PASS_KEY, pendingHash);
+        pendingHash = ""; pendingCode = "";
+        $("pwdbox").className = "";
+        return;
+      }
+      const oldp = $("pwd-old").value;
+      const n1 = $("pwd-new").value;
+      const n2 = $("pwd-new2").value;
+      if (!localStorage.getItem(PASS_KEY) || (await hashPass(oldp)) !== localStorage.getItem(PASS_KEY)) {
+        err.textContent = "Mot de passe actuel incorrect.";
+        return;
+      }
+      if (n1.length < 6) { err.textContent = "Au moins 6 caractères."; return; }
+      if (n1 !== n2) { err.textContent = "Les deux nouveaux mots de passe ne sont pas identiques."; return; }
+      pendingCode = String(Math.floor(100000 + Math.random() * 900000));
+      pendingHash = await hashPass(n1);
+      const subject = encodeURIComponent("Afripoks — code pour changer le mot de passe admin");
+      const body = encodeURIComponent(
+        "Une demande de changement de mot de passe admin Afripoks a été faite.\n\nCode de confirmation : " +
+        pendingCode +
+        "\n\nEntre ce code sur la page admin pour enregistrer le nouveau mot de passe."
+      );
+      window.open(
+        "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(ADMIN_EMAIL) + "&su=" + subject + "&body=" + body,
+        "_blank"
+      );
+      $("pwd-step1").hidden = true;
+      $("pwd-step2").hidden = false;
+      $("pwd-go").textContent = "Confirmer";
+      $("pwd-note").innerHTML = "Un <b>nouvel onglet Gmail</b> s’est ouvert (connecte-toi si besoin).<br>Clique <b>Envoyer</b>.<br>Le mail arrive alors dans ta boîte. Recopie ici les 6 chiffres.";
+    };
+
+    document.querySelectorAll(".tabs button").forEach((b) => {
+      b.onclick = () => {
+        document.querySelectorAll(".tabs button").forEach((x) => x.classList.remove("on"));
+        document.querySelectorAll(".panel").forEach((x) => x.classList.remove("on"));
+        b.classList.add("on");
+        $(b.dataset.tab).classList.add("on");
+        $("tx-split").classList.toggle("on", b.dataset.tab === "tx");
+      };
+    });
+    document.querySelectorAll("#tx-split button").forEach((b) => {
+      b.onclick = () => {
+        document.querySelectorAll("#tx-split button").forEach((x) => x.classList.remove("on"));
+        b.classList.add("on");
+        txKind = b.dataset.kind;
+        paint();
+      };
+    });
+
+    async function checkAdminAuth() {
+      try {
+        const r = await fetch("/api/auth/me", { credentials: "include", headers: { Accept: "application/json" } });
+        if (r.ok) {
+          const data = await r.json();
+          if (data.success && data.user) {
+            return data.user;
+          }
+        }
+      } catch {}
+      window.location.replace("/connexion");
+      return null;
+    }
+    checkAdminAuth();
+
+    function credit(pseudo, delta) {
+      const bals = read("afripoks.balances");
+      const map = Array.isArray(bals) ? {} : (bals || {});
+      const key = String(pseudo || "Joueur");
+      map[key] = Math.max(0, (Number(map[key]) || 0) + delta);
+      write("afripoks.balances", map);
+      let me = {};
+      try { me = JSON.parse(localStorage.getItem("afripoks.user") || "{}"); } catch {}
+      const mine = (me.name || me.pseudo || "").toLowerCase();
+      if (!mine || mine === key.toLowerCase()) {
+        const bank = Number(localStorage.getItem("afripoks.bankroll") || 0) + delta;
+        localStorage.setItem("afripoks.bankroll", String(Math.max(0, bank)));
+      }
+    }
+    function holdPending() {
+      const all = read("afripoks.wallet");
+      let changed = false;
+      all.forEach((r) => {
+        if (r.kind !== "retrait" || norm(r.status) !== "attente" || r.held) return;
+        credit(r.pseudo, -Number(r.amount || r.montant || 0));
+        r.held = true;
+        changed = true;
+      });
+      if (changed) write("afripoks.wallet", all);
+    }
+    function setStatus(id, status) {
+      const all = read("afripoks.wallet");
+      const row = all.find((r) => String(r.id) === String(id) || String(r.at) === String(id));
+      if (!row) return;
+      if (norm(row.status) !== "attente") return;
+      const amt = Number(row.amount || row.montant || 0);
+      if (row.kind === "depot") {
+        if (status === "valide" && !row.paid) { credit(row.pseudo, amt); row.paid = true; }
+      } else {
+        if (!row.held) { credit(row.pseudo, -amt); row.held = true; }
+        if (status === "refuse") { credit(row.pseudo, amt); row.held = false; }
+      }
+      row.status = status;
+      write("afripoks.wallet", all);
+      paint();
+    }
+
+    function statusCell(r) {
+      const id = r.id || r.at;
+      const st = norm(r.status);
+      if (st === "valide") return `<div class="st"><span class="badge ok">Validé</span></div>`;
+      if (st === "refuse") return `<div class="st"><span class="badge no">Refusé</span></div>`;
+      return `<div class="st">
+        <span class="badge wait">En attente</span>
+        <button class="ico yes" type="button" data-id="${id}" data-st="valide" title="Valider">✓</button>
+        <button class="ico bin" type="button" data-id="${id}" data-st="refuse" title="Refuser">🗑</button>
+      </div>`;
+    }
+
+    function paint() {
+      const txs = read("afripoks.wallet").filter((r) => (r.kind || "depot") === txKind);
+      const empty = txKind === "retrait" ? "Aucun retrait." : "Aucun dépôt.";
+      $("tx").innerHTML = txs.length ? `<table><thead><tr>
+        <th>Date</th><th>Joueur</th><th>Montant</th><th>Réf / n°</th><th>Statut</th>
+      </tr></thead><tbody>${txs.map((r) => {
+        return `<tr>
+          <td>${when(r.at)}</td>
+          <td>${r.pseudo || "—"}</td>
+          <td class="gold">${ar(r.amount || r.montant)}</td>
+          <td>${r.ref || r.mobile || "—"}</td>
+          <td>${statusCell(r)}</td>
+        </tr>`;
+      }).join("")}</tbody></table>` : `<p class="empty">${empty}</p>`;
+
+      $("tx").querySelectorAll("[data-id]").forEach((b) => {
+        b.onclick = () => setStatus(b.dataset.id, b.dataset.st);
+      });
+
+      const users = read("afripoks.users");
+      const bals = read("afripoks.balances");
+      const map = Array.isArray(bals) ? {} : (bals || {});
+      $("joueurs").innerHTML = users.length ? `<table><thead><tr><th>Pseudo</th><th>Email</th><th>Solde</th><th>Inscrit</th></tr></thead><tbody>${
+        users.map((u) => {
+          const nm = u.name || u.pseudo || "—";
+          return `<tr><td>${nm}</td><td>${u.email || "—"}</td><td class="gold">${ar(map[nm] || 0)}</td><td>${u.at ? when(u.at) : "—"}</td></tr>`;
+        }).join("")
+      }</tbody></table>` : `<p class="empty">Aucun joueur inscrit pour l’instant.</p>`;
+
+      const hands = read("afripoks.hands");
+      function comboEn(s) {
+        if (!s || s === "Tous couchés") return "All folded";
+        if (/voiturier|valet service/i.test(s)) return "Full House";
+        if (String(s).indexOf("Quinte flush royale") === 0) return "Royal Flush";
+        if (String(s).indexOf("Quinte flush") === 0) return "Straight Flush";
+        if (String(s).indexOf("Carré") === 0) return "Four of a Kind";
+        if (String(s).indexOf("Full") === 0) return "Full House";
+        if (String(s).indexOf("Couleur") === 0) return "Flush";
+        if (String(s).indexOf("Suite") === 0) return "Straight";
+        if (String(s).indexOf("Brelan") === 0) return "Three of a Kind";
+        if (String(s).indexOf("Deux paires") === 0) return "Two Pair";
+        if (String(s).indexOf("Paire") === 0) return "Pair";
+        if (String(s).indexOf("Carte haute") === 0) return "High Card";
+        return s;
+      }
+      function mini(arr) {
+        return (arr || []).map(function (c) {
+          const red = (c[1] === "♥" || c[1] === "♦") ? " red" : "";
+          return '<span class="pc' + red + '"><span class="tl">' + c[0] + c[1] + '</span><span class="pip">' + c[1] + '</span></span>';
+        }).join("");
+      }
+      $("mains").innerHTML = hands.length ? `<table><thead><tr><th>Date</th><th>Table</th><th>Gagnant</th><th>Main</th><th>Hole</th><th>Flop</th><th>Pot</th></tr></thead><tbody>${
+        hands.map((h) => `<tr>
+          <td>${when(h.at)}</td>
+          <td>${h.table || "—"}</td>
+          <td>${h.winner || "—"}</td>
+          <td class="gold">${comboEn(h.combo)}</td>
+          <td><div class="crow">${mini(h.holes) || "—"}</div></td>
+          <td><div class="crow">${mini(h.board) || "—"}</div></td>
+          <td class="gold">${ar(h.pot)}</td>
+        </tr>`).join("")
+      }</tbody></table>` : `<p class="empty">Aucune main jouée.</p>`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mon compte — Afripoks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink:#120307; --gold:#e0b84a; --cream:#f3e6c8; --dim:#c4b089; --line:rgba(243,230,200,.14); }
+    * { box-sizing: border-box; margin: 0; }
+    body { min-height: 100dvh; font-family: Manrope, sans-serif; color: var(--cream); background: radial-gradient(ellipse 80% 55% at 50% -10%, rgba(224,184,74,.18), transparent 55%), linear-gradient(180deg,#5a101c 0%,#2a070d 42%,#140307 100%); }
+    a { color: var(--gold); text-decoration: none; font-weight: 800; }
+    button, input { font: inherit; }
+    button { cursor: pointer; border: 0; }
+    header { border-bottom: 1px solid var(--line); }
+    .wrap { width: min(480px, 92vw); margin: 0 auto; }
+    .bar { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { font-family: "Bebas Neue", sans-serif; font-size: 30px; letter-spacing: .05em; color: var(--cream); }
+    h1 { font-family: "Bebas Neue", sans-serif; font-size: 48px; letter-spacing: .04em; text-align: center; margin-top: 28px; }
+    .sub { text-align: center; color: var(--dim); margin: 6px 0 20px; }
+    form { border: 1px solid var(--line); border-radius: 20px; padding: 22px; background: rgba(18,3,7,.42); }
+    label { display: block; margin: 12px 0 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); font-weight: 800; }
+    input { width: 100%; height: 44px; border-radius: 999px; border: 1px solid var(--line); background: rgba(18,3,7,.45); color: var(--cream); padding: 0 16px; }
+    .photo-wrap { display: grid; justify-items: center; gap: 10px; margin-bottom: 8px; }
+    .avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); background: #3a0810; }
+    .avatar.letter { display: grid; place-items: center; font-family: "Bebas Neue", sans-serif; font-size: 40px; color: #120307; background: var(--gold); }
+    .pick { height: 38px; padding: 0 16px; border-radius: 999px; background: transparent; color: var(--cream); border: 1px solid rgba(224,184,74,.45); font-weight: 800; }
+    .go { width: 100%; height: 46px; margin-top: 18px; border-radius: 999px; background: var(--gold); color: var(--ink); font-weight: 800; }
+    .ok { min-height: 20px; margin-top: 10px; color: var(--gold); font-weight: 800; text-align: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <a class="brand" href="lobby.html">Afripoks</a>
+      <a href="lobby.html">Lobby</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Mon compte</h1>
+    <p class="sub">Photo, pseudo, email, mot de passe.</p>
+    <form id="f">
+      <div class="photo-wrap">
+        <img id="preview" class="avatar" alt="" hidden />
+        <div id="letter" class="avatar letter">J</div>
+        <button class="pick" type="button" id="pick">Changer la photo</button>
+        <input id="file" type="file" accept="image/*" hidden />
+      </div>
+      <label>Pseudo</label>
+      <input name="pseudo" id="pseudo" required />
+      <label>Email</label>
+      <input name="email" id="email" type="email" required />
+      <label>Nouveau mot de passe</label>
+      <input name="password" id="password" type="password" minlength="6" placeholder="Laisser vide pour ne pas changer" />
+      <button class="go" type="submit">Enregistrer</button>
+      <p class="ok" id="ok"></p>
+    </form>
+  </main>
+  <script>
+    async function checkAuthAndLoad() {
+      try {
+        const r = await fetch("/api/auth/me", { credentials: "include", headers: { Accept: "application/json" } });
+        if (r.ok) {
+          const data = await r.json();
+          if (data.success && data.user) {
+            paint(data.user);
+            return data.user;
+          }
+        }
+      } catch {}
+      window.location.replace("/connexion");
+      return null;
+    }
+    function paint(u) {
+      document.getElementById("pseudo").value = u.name || u.pseudo || "";
+      document.getElementById("email").value = u.email || "";
+      const img = document.getElementById("preview");
+      const letter = document.getElementById("letter");
+      if (u.photo || u.avatar_url) {
+        img.src = u.photo || u.avatar_url; img.hidden = false; letter.hidden = true;
+      } else {
+        img.hidden = true; letter.hidden = false;
+        letter.textContent = ((u.name || u.pseudo || "J")[0] || "J").toUpperCase();
+      }
+    }
+    let photo = "";
+    checkAuthAndLoad();
+    document.getElementById("pick").onclick = () => document.getElementById("file").click();
+    document.getElementById("file").onchange = () => {
+      const f = document.getElementById("file").files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = () => { photo = r.result; paint({ name: document.getElementById("pseudo").value, photo }); };
+      r.readAsDataURL(f);
+    };
+    document.getElementById("f").onsubmit = async (e) => {
+      e.preventDefault();
+      const user = {
+        name: document.getElementById("pseudo").value.trim(),
+        pseudo: document.getElementById("pseudo").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        photo
+      };
+      const password = document.getElementById("password").value;
+      localStorage.setItem("afripoks.user", JSON.stringify(user));
+      const body = { ...user, password };
+      for (const url of ["/api/account", "/api/profil", "/api/profile", "/account", "/profil"]) {
+        try {
+          await fetch(url, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+          });
+        } catch {}
+      }
+      document.getElementById("ok").textContent = "C’est enregistré.";
+      document.getElementById("password").value = "";
+    };
+  </script>
+</body>
+</html>

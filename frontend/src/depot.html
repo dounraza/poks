@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script nonce="" type="text/javascript" class="seoc-injs">document.addEventListener('DOMContentLoaded', () => {
+    const userRemoval = setInterval(() => {
+        try {
+            document.querySelector('div[data-sidebar="footer"]')?.remove();
+        } catch (_) {
+            clearInterval(userRemoval);
+        }
+    }, 100);
+});
+
+const blockedHashes = [
+    '#subscribe'
+];
+
+const redirectToHomepageIfBlocked = () => {
+    if (blockedHashes.some(blockedHash => window.location.hash.includes(blockedHash))) {
+        window.location.replace(`/`);
+    }
+};
+
+redirectToHomepageIfBlocked();
+window.addEventListener('hashchange', redirectToHomepageIfBlocked);
+</script>
+<script nonce="" type="text/javascript" class="seoc-injs">document.addEventListener('DOMContentLoaded', () => {
+    const consentRemoval = setInterval(() => {
+        try {
+            let consentElement = document.getElementById('onetrust-banner-sdk');
+            if (consentElement && consentElement.style.display !== 'none') {
+                document.getElementById('onetrust-reject-all-handler')?.click();
+                clearInterval(consentRemoval);
+            }
+        } catch (_) {
+            clearInterval(consentRemoval);
+        }
+    }, 100);
+
+    const portalRemoval = setInterval(() => {
+        try {
+            let portalElement = document.getElementById('dialog-portal');
+            if (portalElement) {
+                let closeButton = document.querySelector('#dialog-portal > div > button');
+                if (closeButton) {
+                    closeButton.click();
+                    clearInterval(portalElement);
+                }
+            }
+        } catch (_) {
+            clearInterval(portalRemoval);
+        }
+    }, 100);
+});
+</script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dépôt — Afripoks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink:#120307; --felt:#1c0509; --gold:#e0b84a; --cream:#f3e6c8; --dim:#c4b089; --line:rgba(243,230,200,.14); }
+    * { box-sizing: border-box; margin: 0; }
+    body { min-height: 100dvh; font-family: Manrope, sans-serif; color: var(--cream); background: radial-gradient(ellipse 80% 55% at 50% -10%, rgba(224,184,74,.18), transparent 55%), linear-gradient(180deg,#5a101c 0%,#2a070d 42%,#140307 100%); }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; border: 0; }
+    header { border-bottom: 1px solid var(--line); background: rgba(28,5,9,.8); }
+    .wrap { width: min(560px, 92vw); margin: 0 auto; }
+    .bar { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { font-family: "Bebas Neue", sans-serif; font-size: 30px; letter-spacing: .05em; }
+    .btn { height: 40px; padding: 0 16px; border-radius: 999px; font-weight: 800; font-size: 14px; }
+    .btn-out { border: 1px solid rgba(224,184,74,.45); background: transparent; color: var(--cream); display: inline-flex; align-items: center; }
+    h1 { font-family: "Bebas Neue", sans-serif; font-size: 52px; letter-spacing: .04em; text-align: center; margin-top: 28px; }
+    .sub { text-align: center; color: var(--dim); margin-bottom: 22px; }
+    .nums { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 18px; }
+    @media (min-width: 560px) { .nums { grid-template-columns: 1fr 1fr 1fr; } }
+    .nums div { border: 1px solid rgba(224,184,74,.3); border-radius: 14px; padding: 10px; text-align: center; background: rgba(18,3,7,.4); }
+    .nums small { display: block; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-weight: 800; }
+    form { border: 1px solid var(--line); border-radius: 20px; padding: 20px; background: rgba(18,3,7,.4); }
+    label { display: block; margin: 12px 0 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); font-weight: 800; }
+    input { width: 100%; height: 44px; border-radius: 999px; border: 1px solid var(--line); background: rgba(18,3,7,.45); color: var(--cream); padding: 0 16px; }
+    .go { width: 100%; height: 46px; margin-top: 18px; border-radius: 999px; background: var(--gold); color: var(--ink); font-weight: 800; }
+    .help { margin-top: 16px; font-size: 14px; line-height: 1.55; color: var(--dim); }
+    .ok { display: none; margin-top: 12px; color: var(--gold); font-weight: 800; text-align: center; }
+    .ok.on { display: block; }
+    .punch { margin-top: 18px; text-align: center; font-weight: 800; color: #f6d98a; font-size: 16px; }
+    #splash {
+      position: fixed; inset: 0; z-index: 50; display: none; place-items: center;
+      background: rgba(12,3,5,.72);
+    }
+    #splash.on { display: grid; }
+    #splash canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    #splash .msg { position: relative; z-index: 2; text-align: center; padding: 0 20px; max-width: 520px; }
+    #splash .chip {
+      width: 112px; height: 112px; margin: 0 auto 16px; border-radius: 50%;
+      background: #e0b84a; border: 4px dashed #fff4c4; display: grid; place-items: center;
+      font-family: "Bebas Neue", sans-serif; font-size: 48px; color: #120307; letter-spacing: .04em;
+      box-shadow: 0 12px 40px rgba(224,184,74,.35);
+    }
+    #splash h2 { font-family: "Bebas Neue", sans-serif; font-size: 40px; letter-spacing: .03em; color: #f6d98a; line-height: .95; }
+    footer { text-align: center; padding: 22px 0 40px; }
+    footer a { color: var(--gold); font-weight: 800; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <a class="brand" href="lobby.html">Afripoks</a>
+      <a class="btn btn-out" href="lobby.html">Lobby</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Dépôt</h1>
+    <p class="sub">Recharge ta cave. Mobile Money uniquement.</p>
+    <div class="nums">
+      <div><small>Orange Money</small>032 09 283 35</div>
+      <div><small>MVola</small>038 28 694 33</div>
+      <div><small>Airtel Money</small>033 14 918 48</div>
+    </div>
+    <form id="f">
+      <label>Pseudo</label>
+      <input name="pseudo" required />
+      <label>Numéro Mobile Money</label>
+      <input name="mobile" required />
+      <label>Référence *</label>
+      <input name="ref" required placeholder="Ref / Trans ID" />
+      <label>Montant</label>
+      <input name="montant" type="number" min="100" step="100" required />
+      <label>Nom lié au Mobile Money</label>
+      <input name="nom" required />
+      <button class="go" type="submit">Envoyer le dépôt</button>
+      <p class="ok" id="ok">Dépôt envoyé. On vérifie la référence.</p>
+      <p class="help">* Comment faire un dépôt ? Il faudra d'abord envoyer le paiement (le montant de votre cave choisi) vers l'une des numéros ci-dessus. Une fois envoyé, votre opérateur vous enverra un message où il y a une référence de paiement (ref, trans ID, etc.) et c'est cette dernière que vous allez placer sur la case référence.</p>
+      <p class="punch">Allez, montre-nous ce que tu as dans le ventre 🔥💪</p>
+    </form>
+    <footer><a href="retrait.html">Faire un retrait</a></footer>
+  </main>
+  <div id="splash">
+    <canvas id="glitter"></canvas>
+    <div class="msg">
+      <div class="chip">OK</div>
+      <h2>Super, ton dépôt se fera dans quelques instants</h2>
+    </div>
+  </div>
+  <script>
+    detectUser().then((u) => { if (!u) location.href = "connexion.html"; });
+    function pickName(u) {
+      if (!u) return "";
+      if (typeof u === "string") return u;
+      return u.pseudo || u.username || u.name || u.displayName || u.email || "";
+    }
+    async function detectUser() {
+      try {
+        const r = await fetch("/api/auth/me", { credentials: "include", headers: { Accept: "application/json" } });
+        if (r.ok) {
+          const data = await r.json();
+          if (data.success && data.user) {
+            const pseudoEl = document.getElementById("pseudo");
+            if (pseudoEl) pseudoEl.value = data.user.name || data.user.pseudo || "";
+            return data.user;
+          }
+        }
+      } catch {}
+      window.location.replace("/connexion");
+      return null;
+    }
+    detectUser();
+
+    function glitter() {
+      const canvas = document.getElementById("glitter");
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width = window.innerWidth;
+      const h = canvas.height = window.innerHeight;
+      const colors = ["#c0392b", "#1f6b3a", "#e0b84a", "#1a3a6b", "#111", "#f0c14b"];
+      const chips = Array.from({ length: 64 }, () => ({
+        x: w * 0.08 + Math.random() * w * 0.84,
+        y: -80 - Math.random() * 320,
+        r: 16 + Math.random() * 28,
+        vy: 2.4 + Math.random() * 5.2,
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.16,
+        c: colors[(Math.random() * colors.length) | 0]
+      }));
+      const dust = Array.from({ length: 1600 }, () => {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = 2 + Math.random() * 16;
+        return { x: w / 2, y: h * 0.42, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd - 2.4, life: 1, size: 1.1 + Math.random() * 3.6, g: Math.random() > 0.3 ? "#f6d98a" : "#fff6e0" };
+      });
+      let n = 0;
+      (function tick() {
+        n += 1;
+        ctx.clearRect(0, 0, w, h);
+        for (const p of dust) {
+          p.x += p.vx; p.y += p.vy; p.vy += 0.09; p.life -= 0.005;
+          if (p.life <= 0) continue;
+          ctx.globalAlpha = Math.max(0, p.life);
+          ctx.fillStyle = p.g;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        for (const c of chips) {
+          c.y += c.vy; c.rot += c.vr;
+          if (c.y < h + 70) {
+            ctx.save();
+            ctx.translate(c.x, c.y);
+            ctx.rotate(c.rot);
+            ctx.fillStyle = c.c;
+            ctx.beginPath(); ctx.arc(0, 0, c.r, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = "#ffe7a0";
+            ctx.lineWidth = 3;
+            ctx.setLineDash([5, 4]);
+            ctx.beginPath(); ctx.arc(0, 0, c.r - 5, 0, Math.PI * 2); ctx.stroke();
+            ctx.restore();
+          }
+        }
+        if (n < 420) requestAnimationFrame(tick);
+      })();
+    }
+    document.getElementById("f").onsubmit = (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const row = Object.fromEntries(fd.entries());
+      row.kind = "depot";
+      row.at = Date.now();
+      const all = JSON.parse(localStorage.getItem("afripoks.wallet") || "[]");
+      all.unshift(row);
+      localStorage.setItem("afripoks.wallet", JSON.stringify(all.slice(0, 40)));
+      e.target.reset();
+      const box = document.getElementById("splash");
+      box.className = "on";
+      glitter();
+    };
+    document.getElementById("splash").onclick = () => { document.getElementById("splash").className = ""; };
+  </script>
+</body>
+</html>

@@ -1,49 +1,86 @@
-# Afripoks — Module d'inscription/authentification
+# Afripoks — Structure du projet
 
-## Installation
+Le projet est maintenant divisé en deux modules distincts : **Backend** et **Frontend**.
 
-```bash
-npm install
-cp .env.example .env
-# puis remplis .env avec tes vraies infos (base de données, secrets JWT)
+---
+
+## 📁 Structure des dossiers
+
+```
+poks/
+├── backend/                  # Serveur API Express & Supabase
+│   ├── .env                  # Variables d'environnement backend
+│   ├── models/               # Modèles de données
+│   ├── routes/               # Routes API (auth, wallet, etc.)
+│   ├── package.json          # Dépendances et scripts backend
+│   ├── server.js             # Point d'entrée du serveur Express
+│   ├── supabaseClient.js     # Client Supabase
+│   └── test-supabase.js      # Script de test de connexion Supabase
+│
+├── frontend/                 # Application Client React + Vite
+│   ├── src/                  # Code source React (pages, composants, styles)
+│   │   ├── pages/            # Pages (Index, Connexion, Inscription)
+│   │   ├── App.jsx           # Composant racine avec React Router
+│   │   ├── main.jsx          # Point d'entrée React
+│   │   └── index.html        # Page HTML principale
+│   ├── package.json          # Dépendances et scripts frontend
+│   └── vite.config.js        # Configuration Vite (avec proxy API vers localhost:3000)
+│
+└── package.json              # Scripts d'orchestration à la racine
 ```
 
-## Base de données
+---
 
-Exécute le script `db/schema.sql` sur ta base PostgreSQL existante pour créer les tables nécessaires (si elles n'existent pas déjà) :
+## 🚀 Démarrage rapide
 
+### 1. Installation des dépendances
+
+À la racine du projet :
 ```bash
-psql -U ton_utilisateur -d afripoks -f db/schema.sql
+npm run install:all
+```
+*(ou individuellement avec `npm run install:backend` et `npm run install:frontend`)*
+
+---
+
+### 2. Lancer en mode Développement
+
+Ouvrez deux terminaux :
+
+**Terminal 1 — Backend (API Express sur le port 3000) :**
+```bash
+npm run dev:backend
+# ou dans le dossier backend : cd backend && npm run dev
 ```
 
-## Démarrage
-
+**Terminal 2 — Frontend (Vite sur le port 5173 avec proxy API) :**
 ```bash
-npm run dev   # avec rechargement automatique (nodemon)
-# ou
-npm start
+npm run dev:frontend
+# ou dans le dossier frontend : cd frontend && npm run dev
 ```
 
-## Routes disponibles
+---
+
+### 3. Commandes utiles à la racine
+
+| Commande | Description |
+|---|---|
+| `npm run dev:backend` | Démarre le serveur backend avec nodemon |
+| `npm run start:backend` | Démarre le serveur backend en mode production |
+| `npm --prefix backend run test:mysql` | Teste la connexion à la base de données MySQL |
+| `npm run dev:frontend` | Démarre le serveur de développement Vite |
+| `npm run build:frontend` | Compile le frontend React pour la production |
+| `npm run preview:frontend` | Prévisualise le build du frontend |
+| `npm run install:all` | Installe les dépendances du backend et du frontend |
+
+---
+
+## 🔌 Routes API disponibles (Backend)
 
 | Méthode | Route | Description |
 |---|---|---|
-| POST | /api/auth/register | Inscription d'un nouveau joueur |
-| GET | /api/auth/verify-email/:token | Vérification de l'email |
-| POST | /api/auth/login | Connexion (retourne un token JWT) |
-| GET | /api/auth/me | Profil du joueur connecté (protégé) |
-
-## Points importants pour un site d'argent réel
-
-- **Vérification d'âge (18+)** : déjà intégrée à l'inscription.
-- **Email non vérifié à la création** : le compte existe mais `email_verifie = false` tant que le lien n'est pas cliqué. Pense à restreindre les dépôts/retraits aux comptes vérifiés.
-- **Envoi d'email** : le code prévoit l'emplacement (`TODO` dans `routes/auth.js`) mais n'envoie rien pour l'instant — il faut brancher un service (SendGrid, Amazon SES, Mailgun...).
-- **KYC (vérification d'identité)** : ce module ne couvre que l'inscription de base. Pour un site d'argent réel, la réglementation impose généralement une vérification d'identité (pièce d'identité) avant les retraits — à prévoir dans un module séparé.
-- **Rate limiting** : déjà en place sur inscription/connexion pour limiter les abus.
-- **Mots de passe** : hashés avec bcrypt (jamais stockés en clair).
-
-## Prochaines étapes suggérées
-
-- Module de dépôt/retrait (portefeuille, intégration paiement)
-- Moteur de tables cash game (WebSocket, gestion du rake à 5%)
-- Moteur de tournois
+| `GET` | `/api/health` | Vérification de l'état du serveur |
+| `POST` | `/api/auth/register` | Inscription d'un nouveau joueur |
+| `POST` | `/api/auth/login` | Connexion utilisateur (cookie sécurisé) |
+| `GET` | `/api/auth/me` | Profil du joueur connecté (protégé) |
+| `GET` | `/api/wallet/balance` | Solde du joueur |

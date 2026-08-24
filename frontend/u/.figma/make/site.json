@@ -1,0 +1,10 @@
+{
+  "description": "Create and customize a 9-seat poker table layout for game planning, event organization, or online poker room design with ease and precision.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
