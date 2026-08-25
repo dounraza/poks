@@ -7,6 +7,35 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght=400;600;800&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      function randomIntShim(min, max) {
+        if (max === undefined) {
+          max = min;
+          min = 0;
+        }
+        var range = max - min;
+        if (range <= 0) return min;
+        var arr = new Uint32Array(1);
+        (window.crypto || window.msCrypto).getRandomValues(arr);
+        return min + (arr[0] % range);
+      }
+      if (typeof window !== "undefined") {
+        window.process = window.process || { env: {} };
+        if (window.crypto) {
+          try { window.crypto.randomInt = randomIntShim; } catch (e) {}
+        }
+        window.randomInt = randomIntShim;
+      }
+      if (typeof globalThis !== "undefined") {
+        globalThis.process = globalThis.process || { env: {} };
+        if (globalThis.crypto) {
+          try { globalThis.crypto.randomInt = randomIntShim; } catch (e) {}
+        }
+        globalThis.randomInt = randomIntShim;
+      }
+    })();
+  </script>
 </head>
 <body>
   <div id="root"></div>
